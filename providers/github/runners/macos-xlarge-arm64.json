@@ -1,7 +1,8 @@
 {
   "id": "macos-xlarge-arm64",
   "labels": [
-    "macos-*-xlarge"
+    "macos-*-xlarge",
+    "xcode-27-xlarge"
   ],
   "os": "macos",
   "arch": "arm64",
@@ -10,5 +11,5 @@
   "public_repo_free": false,
   "source_url": "https://docs.github.com/en/billing/reference/actions-runner-pricing",
   "verified_as_of": "2026-11-18",
-  "notes": "Larger runner (Apple M-series); billed on public repositories too. vCPU count not yet verified. Re-check against the GitHub pricing reference; GitHub has changed runner prices and specs before."
+  "notes": "Larger runner (Apple M-series); billed on public repositories too. vCPU count not yet verified. Re-check against the GitHub pricing reference; GitHub has changed runner prices and specs before. Xcode image labels (xcode-NN) run on the same runners and bill the same."
 }
