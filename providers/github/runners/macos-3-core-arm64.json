@@ -1,0 +1,16 @@
+{
+  "id": "macos-3-core-arm64",
+  "labels": [
+    "macos-latest",
+    "macos-15",
+    "macos-14"
+  ],
+  "os": "macos",
+  "arch": "arm64",
+  "vcpu": 3,
+  "price_usd_per_minute": 0.062,
+  "public_repo_free": true,
+  "source_url": "https://docs.github.com/en/billing/reference/actions-runner-pricing",
+  "verified_as_of": "2026-11-18",
+  "notes": "Standard runner (Apple M1). Re-check against the GitHub pricing reference; GitHub has changed runner prices and specs before."
+}

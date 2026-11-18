@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC0-1.0
+
+runnerdb data: CC0 1.0 Universal (Public Domain Dedication)
+
+This license applies to the dataset in this repository: everything under
+providers/ and schema/, and the generated api.json and schema.json.
+(The code, including build.mjs and the generated index.html, is MIT-licensed;
+see LICENSE.)
+
+To the extent possible under law, the runnerdb contributors have waived all
+copyright and related or neighboring rights to the runnerdb data. This work is
+published from the contributors' respective jurisdictions.
+
+You can copy, modify, distribute and use the data, even for commercial
+purposes, all without asking permission. Attribution is appreciated but not
+required.
+
+Prices and specs describe third-party products and are provided as-is, without
+warranty of accuracy. Always confirm against the provider's own pricing page.
+
+Full legal code: https://creativecommons.org/publicdomain/zero/1.0/legalcode

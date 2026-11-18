@@ -1,0 +1,16 @@
+{
+  "id": "linux-2-core-x64",
+  "labels": [
+    "ubuntu-latest",
+    "ubuntu-24.04",
+    "ubuntu-22.04"
+  ],
+  "os": "linux",
+  "arch": "x64",
+  "vcpu": 2,
+  "price_usd_per_minute": 0.006,
+  "public_repo_free": true,
+  "source_url": "https://docs.github.com/en/billing/reference/actions-runner-pricing",
+  "verified_as_of": "2026-11-18",
+  "notes": "Standard runner. Jobs in public repositories run on a larger (4 vCPU) machine for free. Re-check against the GitHub pricing reference; GitHub has changed runner prices and specs before."
+}

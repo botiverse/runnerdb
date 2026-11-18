@@ -1,0 +1,15 @@
+{
+  "name": "GitHub-hosted runners",
+  "homepage": "https://github.com/features/actions",
+  "pricing_url": "https://docs.github.com/en/billing/reference/actions-runner-pricing",
+  "billing": {
+    "unit": "minute",
+    "rounding": "per_job_ceil",
+    "notes": "Each job is rounded up to the nearest whole minute and billed at the per-minute rate of its runner."
+  },
+  "public_repo_policy": "standard_runners_free",
+  "free_tier": {
+    "notes": "Plans include a monthly quota of minutes for private repositories; the quota varies by plan. See pricing_url. Not applied in runnerdb prices."
+  },
+  "notes": "Standard runners are free on public repositories; larger runners are billed even on public repositories."
+}

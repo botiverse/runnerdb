@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://runnerdb.stamp.build/schema/provider.schema.json",
+  "title": "runnerdb provider",
+  "description": "A CI runner provider and its billing rules. Stored at providers/<provider-id>/provider.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "homepage", "pricing_url", "billing", "public_repo_policy"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "name": { "type": "string", "minLength": 1, "description": "Human-readable provider name." },
+    "homepage": { "type": "string", "format": "uri", "description": "Provider homepage (https)." },
+    "pricing_url": { "type": "string", "format": "uri", "description": "Official pricing page (https)." },
+    "billing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "rounding"],
+      "properties": {
+        "unit": { "enum": ["minute", "second", "none"], "description": "Unit in which usage is metered." },
+        "rounding": {
+          "enum": ["per_job_ceil", "per_second", "none", "unknown"],
+          "description": "per_job_ceil: each job's duration is rounded up to a whole unit. per_second: no rounding beyond seconds. none: not billed. unknown: not yet verified."
+        },
+        "base_rate_usd": {
+          "type": "number",
+          "minimum": 0,
+          "description": "For multiplier-based billing: USD per billing minute at multiplier 1. A runner's price_usd_per_minute must equal base_rate_usd x multiplier."
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "public_repo_policy": {
+      "enum": ["standard_runners_free", "billed", "not_applicable"],
+      "description": "How jobs from public repositories are billed. Per-runner detail lives in runner.public_repo_free."
+    },
+    "free_tier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["notes"],
+      "properties": {
+        "minutes_per_month": { "type": "integer", "minimum": 0 },
+        "notes": { "type": "string" }
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}

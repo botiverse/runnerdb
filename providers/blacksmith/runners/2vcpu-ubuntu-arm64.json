@@ -1,0 +1,17 @@
+{
+  "id": "2vcpu-ubuntu-arm64",
+  "labels": [
+    "blacksmith-2vcpu-ubuntu-2404-arm"
+  ],
+  "os": "linux",
+  "arch": "arm64",
+  "vcpu": 2,
+  "price_usd_per_minute": 0.0025,
+  "multiplier": 1.25,
+  "public_repo_free": false,
+  "scheduling_discounts": {
+    "flex": 0.6
+  },
+  "source_url": "https://www.blacksmith.sh/pricing",
+  "verified_as_of": "2026-11-18"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "6vcpu-macos-arm64",
+  "labels": [
+    "blacksmith-6vcpu-macos-latest",
+    "blacksmith-6vcpu-macos-15",
+    "blacksmith-6vcpu-macos-26",
+    "blacksmith-6vcpu-macos-27"
+  ],
+  "os": "macos",
+  "arch": "arm64",
+  "vcpu": 6,
+  "price_usd_per_minute": 0.08,
+  "multiplier": 40,
+  "public_repo_free": false,
+  "scheduling_discounts": {
+    "flex": 0.6
+  },
+  "source_url": "https://www.blacksmith.sh/pricing",
+  "verified_as_of": "2026-11-18"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "linux-2-core-arm64",
+  "labels": [
+    "ubuntu-24.04-arm",
+    "ubuntu-22.04-arm"
+  ],
+  "os": "linux",
+  "arch": "arm64",
+  "vcpu": 2,
+  "price_usd_per_minute": 0.005,
+  "public_repo_free": true,
+  "source_url": "https://docs.github.com/en/billing/reference/actions-runner-pricing",
+  "verified_as_of": "2026-11-18",
+  "notes": "Standard runner. Re-check against the GitHub pricing reference; GitHub has changed runner prices and specs before."
+}

@@ -1,0 +1,16 @@
+{
+  "name": "Blacksmith",
+  "homepage": "https://www.blacksmith.sh",
+  "pricing_url": "https://www.blacksmith.sh/pricing",
+  "billing": {
+    "unit": "minute",
+    "rounding": "unknown",
+    "base_rate_usd": 0.002,
+    "notes": "billing_minutes = runtime minutes x runner multiplier, at base_rate_usd per billing minute. Appending \";scheduling=flex\" to a runs-on label bills at 0.6x (see scheduling_discounts). Per-job rounding behaviour not yet verified. Runner specs and labels: https://docs.blacksmith.sh/blacksmith-runners/overview"
+  },
+  "public_repo_policy": "billed",
+  "free_tier": {
+    "notes": "A startup program offers 50% off plus free minutes; not applied in runnerdb prices."
+  },
+  "notes": "Public and private repositories are billed alike."
+}

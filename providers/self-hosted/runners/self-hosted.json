@@ -1,0 +1,14 @@
+{
+  "id": "self-hosted",
+  "labels": [
+    "self-hosted"
+  ],
+  "os": "linux",
+  "arch": "x64",
+  "vcpu": null,
+  "price_usd_per_minute": 0,
+  "public_repo_free": true,
+  "source_url": "https://docs.github.com/en/billing/reference/actions-runner-pricing",
+  "verified_as_of": "2026-11-18",
+  "notes": "Placeholder for any self-hosted runner: $0 platform charge. Your own infrastructure cost (compute, storage, egress, maintenance) is NOT included. os/arch are nominal; the real machine can be anything."
+}

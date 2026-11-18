@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://runnerdb.stamp.build/schema/runner.schema.json",
+  "title": "runnerdb runner",
+  "description": "One runner type (machine shape) of a provider. Stored at providers/<provider-id>/runners/<id>.json; id must equal the file name.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "labels", "os", "arch", "vcpu", "price_usd_per_minute", "public_repo_free", "source_url", "verified_as_of"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]*$", "description": "Stable identifier, unique within the provider." },
+    "labels": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Exact `runs-on` labels. A `*` matches any run of non-empty characters (e.g. `macos-*-large`)."
+    },
+    "os": { "enum": ["linux", "windows", "macos"] },
+    "os_version": { "type": "string", "description": "Optional OS image hint, e.g. ubuntu-24.04." },
+    "arch": { "enum": ["x64", "arm64"] },
+    "vcpu": { "type": ["integer", "null"], "minimum": 1, "description": "vCPU count; null if not verified." },
+    "memory_gb": { "type": "number", "exclusiveMinimum": 0 },
+    "disk_gb": { "type": "number", "exclusiveMinimum": 0 },
+    "gpu": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "count"],
+      "properties": {
+        "model": { "type": "string", "minLength": 1 },
+        "count": { "type": "integer", "minimum": 1 },
+        "memory_gb": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "price_usd_per_minute": { "type": "number", "minimum": 0, "description": "List price in USD per runtime minute, before scheduling discounts." },
+    "multiplier": { "type": "number", "exclusiveMinimum": 0, "description": "Billing-minute multiplier for multiplier-based providers." },
+    "public_repo_free": { "type": "boolean", "description": "True if jobs from public repositories are not billed on this runner." },
+    "scheduling_discounts": {
+      "type": "object",
+      "additionalProperties": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+      "description": "Price factors for optional scheduling modes, e.g. {\"flex\": 0.6} = 60% of list price."
+    },
+    "source_url": { "type": "string", "format": "uri" },
+    "verified_as_of": { "type": "string", "format": "date", "description": "YYYY-MM-DD when the price was last checked against source_url." },
+    "notes": { "type": "string" }
+  }
+}

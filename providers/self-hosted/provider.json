@@ -1,0 +1,11 @@
+{
+  "name": "Self-hosted runners",
+  "homepage": "https://docs.github.com/en/actions/hosting-your-own-runners",
+  "pricing_url": "https://docs.github.com/en/billing/reference/actions-runner-pricing",
+  "billing": {
+    "unit": "none",
+    "rounding": "none",
+    "notes": "No per-minute charge from the CI platform. Your own infrastructure cost is not included."
+  },
+  "public_repo_policy": "not_applicable"
+}
