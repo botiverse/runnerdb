@@ -1,16 +1,25 @@
 import { toast } from 'sonner'
 import type { ReactNode } from 'react'
 import { CheckIcon } from 'lucide-react'
-import { BlacksmithIcon, GitHubIcon } from '@/components/icons'
+import { BlacksmithIcon, CirrusIcon, DepotIcon, GitHubIcon, NamespaceIcon, WarpBuildIcon, runsOnIconUrl, ubicloudIconUrl } from '@/components/icons'
 import { cn } from '@/lib/utils'
 import { OS_LABEL, formatPrice, maxPrice, type Runner, type Unit } from '@/lib/data'
 
 // Official marks for known providers (see NOTICE); colored initials for anything else.
 const AVATAR_BASE = 'inline-flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg shadow-sm ring-1 ring-inset'
 
+// White tile in light theme, near-black in dark (as for GitHub) for marks that have light/dark variants.
+const NEUTRAL = 'bg-white ring-black/10 dark:bg-neutral-950 dark:ring-white/15'
+
 const PROVIDER_ICON: Record<string, { className: string; icon: ReactNode }> = {
-  github: { className: 'bg-white text-[#181717] ring-black/10 dark:bg-neutral-950 dark:text-white dark:ring-white/15', icon: <GitHubIcon className="size-[62%]" /> },
+  github: { className: cn(NEUTRAL, 'text-[#181717] dark:text-white'), icon: <GitHubIcon className="size-[62%]" /> },
   blacksmith: { className: 'bg-[#F0FB29] ring-black/10 dark:ring-white/10', icon: <BlacksmithIcon className="size-full" /> },
+  depot: { className: NEUTRAL, icon: <DepotIcon className="size-[58%]" /> },
+  namespace: { className: NEUTRAL, icon: <NamespaceIcon className="size-[78%]" /> },
+  ubicloud: { className: 'bg-[#FF5C12] ring-black/10 dark:ring-white/10', icon: <img src={ubicloudIconUrl} alt="" className="size-full" /> },
+  warpbuild: { className: NEUTRAL, icon: <WarpBuildIcon className="size-[84%]" /> },
+  'runs-on': { className: 'bg-[#101010] ring-black/10 dark:ring-white/15', icon: <img src={runsOnIconUrl} alt="" className="size-full" /> },
+  'cirrus-runners': { className: cn(NEUTRAL, 'text-[#181717] dark:text-white'), icon: <CirrusIcon className="size-[62%]" /> },
 }
 
 const FALLBACK = [

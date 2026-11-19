@@ -159,4 +159,4 @@ Amplify runs the same two commands (see `amplify.yml`).
 - **Data** (`providers/`, `schema/`, generated `api.json` / `schema.json`): [CC0-1.0](DATA_LICENSE). Public domain; use it for anything.
 - **Code** (`build.mjs`, `site/`, the generated page, workflow): [MIT](LICENSE). `site/src/components/ui/` is adapted from shadcn/ui (MIT).
 
-- **Provider names and logos** (GitHub, Blacksmith, ...): trademarks of their respective owners, not covered by MIT or CC0. runnerdb is not affiliated with or endorsed by any provider; logos are used only to identify each provider. See [NOTICE](NOTICE).
+- **Provider names and logos**: trademarks of their respective owners, not covered by MIT or CC0. runnerdb is not affiliated with or endorsed by any provider; logos are used only to identify each provider. See [NOTICE](NOTICE).

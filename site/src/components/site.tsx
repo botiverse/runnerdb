@@ -118,7 +118,7 @@ export function SiteFooter() {
             <a className="underline underline-offset-4 hover:text-foreground" href={`${REPO}/blob/main/LICENSE`}>MIT</a>.
           </p>
           <p className="text-xs leading-relaxed">
-            GitHub, Blacksmith and other provider names and logos are trademarks of their respective owners. runnerdb is not affiliated with or endorsed by them; logos are used only to identify each provider.
+            Provider names and logos are trademarks of their respective owners. runnerdb is not affiliated with or endorsed by any provider; logos are used only to identify each provider.
           </p>
         </div>
         <div className="flex flex-col gap-3 md:items-end">
