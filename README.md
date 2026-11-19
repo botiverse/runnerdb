@@ -29,7 +29,8 @@ providers/
 schema/
   provider.schema.json       # JSON Schema (draft 2020-12)
   runner.schema.json
-build.mjs                    # validator + static site builder (no dependencies)
+build.mjs                    # validator + api.json/schema.json builder (no dependencies)
+site/                        # the web page: Vite + React + Tailwind, shadcn/ui + TanStack Table
 ```
 
 ### `provider.json`
@@ -105,14 +106,24 @@ Short version: **one PR per price change, with `source_url` and an updated `veri
 
 ```sh
 node build.mjs --check   # validate only (CI runs this)
-node build.mjs           # validate + write dist/api.json, dist/schema.json, dist/index.html
+node build.mjs           # validate + write dist/api.json, dist/schema.json
 ```
 
-You need Node 18 or newer and nothing else; there is no `npm install`.
+For data changes you need Node 18 or newer and nothing else; there is no `npm install`.
+
+The web page lives in `site/` (Vite, React, Tailwind CSS, [shadcn/ui](https://ui.shadcn.com) components and [TanStack Table](https://tanstack.com/table)). It embeds `dist/api.json` at build time and writes `dist/index.html` and `dist/assets/` next to the JSON files. It needs Node 20.19 or newer:
+
+```sh
+npm ci --prefix site
+npm run build --prefix site   # runs node build.mjs, then vite build into dist/
+npm run dev --prefix site     # local dev server
+```
+
+Amplify runs the same two commands (see `amplify.yml`).
 
 ## License
 
 - **Data** (`providers/`, `schema/`, generated `api.json` / `schema.json`): [CC0-1.0](DATA_LICENSE). Public domain; use it for anything.
-- **Code** (`build.mjs`, generated `index.html`, workflow): [MIT](LICENSE).
+- **Code** (`build.mjs`, `site/`, the generated page, workflow): [MIT](LICENSE). `site/src/components/ui/` is adapted from shadcn/ui (MIT).
 
 Provider names are trademarks of their owners. runnerdb is not affiliated with any provider.
