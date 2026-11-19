@@ -1,7 +1,7 @@
 import { toast } from 'sonner'
 import type { ReactNode } from 'react'
-import { AppWindowIcon, CheckIcon, CommandIcon } from 'lucide-react'
-import { BlacksmithIcon, CirrusIcon, DepotIcon, GitHubIcon, LinuxIcon, NamespaceIcon, runsOnIconUrl, ubicloudIconUrl } from '@/components/icons'
+import { CheckIcon } from 'lucide-react'
+import { BlacksmithIcon, CirrusIcon, DepotIcon, GitHubIcon, LinuxIcon, AppleIcon, WindowsIcon, NamespaceIcon, runsOnIconUrl, ubicloudIconUrl } from '@/components/icons'
 import { cn } from '@/lib/utils'
 import { OS_LABEL, formatPrice, maxPrice, type Runner, type Unit } from '@/lib/data'
 
@@ -92,13 +92,12 @@ export function LabelChip({ label, className }: { label: string; className?: str
 }
 
 // OS glyphs, monochrome in currentColor. Linux: Tux (Simple Icons). Apple's and Microsoft's trademark
-// guidelines do not allow their logos on third-party websites without a license, so macOS and Windows
-// use neutral Lucide glyphs (ISC): the Command key symbol and a generic app window. See NOTICE.
+// macOS and Windows use Font Awesome's brand icons (CC BY 4.0); the marks belong to Apple and Microsoft. See NOTICE.
 export function OsIcon({ os, className }: { os: Runner['os']; className?: string }) {
   const c = cn('size-3.5 shrink-0', className)
   if (os === 'linux') return <LinuxIcon className={c} />
-  if (os === 'macos') return <CommandIcon className={c} strokeWidth={2.25} aria-hidden="true" />
-  return <AppWindowIcon className={c} strokeWidth={2.25} aria-hidden="true" />
+  if (os === 'macos') return <AppleIcon className={c} />
+  return <WindowsIcon className={c} />
 }
 
 export function OsBadge({ os }: { os: Runner['os'] }) {

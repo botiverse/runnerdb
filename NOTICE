@@ -67,10 +67,9 @@ Operating system icons
   CC0-1.0 and lists no separate license for this icon). Tux was originally drawn by
   Larry Ewing (lewing@isc.tamu.edu) with The GIMP. Linux is a registered trademark
   of Linus Torvalds. Used for nominative identification of the operating system.
-- macOS and Windows: no Apple or Microsoft logo is used. Apple's guidelines
-  (https://www.apple.com/legal/intellectual-property/guidelinesfor3rdparties.html)
-  and Microsoft's (https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks)
-  do not allow their logos on third-party websites without a license. The page uses
-  neutral Lucide glyphs instead (https://lucide.dev, ISC license): "command" for macOS
-  and "app-window" for Windows. macOS is a trademark of Apple Inc.; Windows is a
-  trademark of Microsoft Corporation; the names are used only to identify the OS.
+- macOS and Windows: the Apple logo and the Windows logo from Font Awesome Free 6.7.2
+  brands, "apple" and "windows" (https://fontawesome.com, icon files CC BY 4.0,
+  Copyright Fonticons, Inc.; https://fontawesome.com/license/free), used unmodified.
+  The Apple logo is a trademark of Apple Inc. and the Windows logo of Microsoft
+  Corporation; they are used only to identify each runner's operating system.
+  runnerdb is not affiliated with or endorsed by Apple or Microsoft.
