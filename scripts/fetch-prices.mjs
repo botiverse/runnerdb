@@ -357,9 +357,7 @@ const FETCHERS = {
 };
 
 // Providers deliberately without a fetcher.
-const NO_FETCHER = {
-  'self-hosted': 'placeholder entry with a $0 platform charge; nothing to fetch',
-};
+const NO_FETCHER = {};
 
 // ---------------------------------------------------------------------------
 // Main

@@ -1,18 +1,16 @@
 import { toast } from 'sonner'
 import type { ReactNode } from 'react'
-import { CheckIcon, ServerIcon } from 'lucide-react'
+import { CheckIcon } from 'lucide-react'
 import { BlacksmithIcon, GitHubIcon } from '@/components/icons'
 import { cn } from '@/lib/utils'
 import { OS_LABEL, formatPrice, maxPrice, type Runner, type Unit } from '@/lib/data'
 
-// Official marks for known providers (see NOTICE); a neutral icon for self-hosted;
-// colored initials for anything else.
+// Official marks for known providers (see NOTICE); colored initials for anything else.
 const AVATAR_BASE = 'inline-flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg shadow-sm ring-1 ring-inset'
 
 const PROVIDER_ICON: Record<string, { className: string; icon: ReactNode }> = {
   github: { className: 'bg-white text-[#181717] ring-black/10 dark:bg-neutral-950 dark:text-white dark:ring-white/15', icon: <GitHubIcon className="size-[62%]" /> },
   blacksmith: { className: 'bg-[#F0FB29] ring-black/10 dark:ring-white/10', icon: <BlacksmithIcon className="size-full" /> },
-  'self-hosted': { className: 'bg-muted text-muted-foreground ring-border', icon: <ServerIcon className="size-[55%]" strokeWidth={2} /> },
 }
 
 const FALLBACK = [

@@ -16,7 +16,7 @@
       "additionalProperties": false,
       "required": ["unit", "rounding"],
       "properties": {
-        "unit": { "enum": ["minute", "second", "flat", "none"], "description": "Unit in which usage is metered. flat: not metered; a flat fee or license (each runner then has flat_fee and price_usd_per_minute 0). none: no charge at all." },
+        "unit": { "enum": ["minute", "second", "flat"], "description": "Unit in which usage is metered. flat: not metered; a flat fee or license (each runner then has flat_fee and price_usd_per_minute 0)." },
         "rounding": {
           "enum": ["per_job_ceil", "per_second", "none", "unknown"],
           "description": "per_job_ceil: each job's duration is rounded up to a whole unit. per_second: no rounding beyond seconds. none: not billed. unknown: not yet verified."

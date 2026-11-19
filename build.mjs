@@ -182,9 +182,6 @@ for (const pEnt of listDir(PROVIDERS_DIR)) {
     } else if (runner.multiplier !== undefined) {
       fail(rFile, '"multiplier" set but provider has no billing.base_rate_usd');
     }
-    if (provider.billing.unit === 'none' && runner.price_usd_per_minute !== 0) {
-      fail(rFile, 'provider billing.unit is "none" but price_usd_per_minute is not 0');
-    }
     if (provider.billing.unit === 'flat') {
       if (!runner.flat_fee) fail(rFile, 'provider billing.unit is "flat"; "flat_fee" is required');
       if (runner.price_usd_per_minute !== 0) fail(rFile, 'provider billing.unit is "flat" but price_usd_per_minute is not 0');
