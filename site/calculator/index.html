@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CI runner cost calculator · runnerdb</title>
+    <meta name="description" content="Estimate a month of CI: ranks every runner across per-minute and flat-fee providers for your OS, size, minutes per month and concurrency. Runs entirely in your browser." />
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <link rel="canonical" href="https://runnerdb.stamp.build/calculator/" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="runnerdb" />
+    <meta property="og:title" content="CI runner cost calculator · runnerdb" />
+    <meta property="og:description" content="Monthly cost of every CI runner for your minutes and concurrency, per-minute and flat-fee plans side by side. Open data (CC0)." />
+    <meta property="og:url" content="https://runnerdb.stamp.build/calculator/" />
+    <meta name="twitter:card" content="summary" />
+    <script>
+      try {
+        var t = localStorage.getItem('runnerdb-theme') || 'system'
+        var dark = t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.classList.toggle('dark', dark)
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p style="font-family: system-ui, sans-serif; max-width: 40rem; margin: 3rem auto; padding: 0 1rem; line-height: 1.6">
+        <strong>runnerdb</strong> needs JavaScript for this page.
+        The full dataset is available as <a href="../api.json">api.json</a>
+        (schema: <a href="../schema.json">schema.json</a>), and the source is on
+        <a href="https://github.com/botiverse/runnerdb">GitHub</a>.
+      </p>
+    </noscript>
+    <script type="module" src="/src/calculator.tsx"></script>
+  </body>
+</html>

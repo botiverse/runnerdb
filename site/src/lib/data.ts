@@ -50,6 +50,8 @@ export type Runner = {
   /** Short text for flat-fee/license runners (billing.unit "flat"); null for metered runners. */
   flatFee: string | null
   flatFeeNotes: string | null
+  /** Fixed flat fee normalized to USD per month (amount_usd, year / 12); null when the data has no fixed amount. */
+  flatMonthly: number | null
   multiplier: number | null
   flex: number | null
   publicFree: boolean
@@ -85,6 +87,7 @@ const toRunners = (p: ApiProvider): Runner[] =>
     price: r.price_usd_per_minute,
     flatFee: r.flat_fee?.summary ?? null,
     flatFeeNotes: r.flat_fee?.notes ?? null,
+    flatMonthly: r.flat_fee?.amount_usd == null ? null : r.flat_fee.period === 'year' ? r.flat_fee.amount_usd / 12 : r.flat_fee.amount_usd,
     multiplier: r.multiplier ?? null,
     flex: r.scheduling_discounts?.flex ?? null,
     publicFree: r.public_repo_free,
@@ -113,6 +116,22 @@ export const flatProviders = Object.values(data.providers)
     runners: toRunners(p).sort((a, b) => a.os.localeCompare(b.os) || a.arch.localeCompare(b.arch) || (a.vcpu ?? 0) - (b.vcpu ?? 0)),
   }))
 
+// Every runner of every provider, metered and flat (used by the cost calculator).
+export const allProviders = Object.values(data.providers).map((p) => ({
+  id: p.id,
+  name: p.name,
+  short: shortName(p.name),
+  flat: isFlat(p),
+  billingNotes: p.billing.notes ?? null,
+  /** free_tier.minutes_per_month, informational in the dataset; the calculator applies it only on request. */
+  freeMinutes: p.free_tier?.minutes_per_month ?? null,
+  freeTierNotes: p.free_tier?.notes ?? null,
+}))
+export const allRunners: Runner[] = Object.values(data.providers).flatMap(toRunners)
+
+/** Minutes in a 30-day month: the most one concurrent job can run. */
+export const MINUTES_PER_MONTH = 43_200
+
 export const OS_LABEL: Record<Runner['os'], string> = { linux: 'Linux', windows: 'Windows', macos: 'macOS' }
 
 export const labelCount = runners.reduce((n, r) => n + r.labels.length, 0)
@@ -129,4 +148,32 @@ export function formatPrice(perMinute: number, unit: Unit): string {
 export function formatDate(iso: string): string {
   const d = new Date(iso + 'T00:00:00Z')
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+}
+
+export function formatUsd(v: number): string {
+  if (v === 0) return '$0'
+  if (v < 1) return '$' + v.toFixed(2)
+  if (v < 100) return '$' + (Math.round(v * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  return '$' + Math.round(v).toLocaleString('en-US')
+}
+
+/** USD per minute with enough digits to tell cheap runners apart. */
+export function formatPerMinute(v: number): string {
+  if (v === 0) return '$0'
+  if (v >= 0.01) return '$' + +v.toFixed(4)
+  return '$' + +v.toPrecision(3)
+}
+
+/**
+ * Cheapest per-minute runner comparable to `r`: same OS and arch, at least r's vCPU (both known), price > 0.
+ * Used for the break-even line on the flat-fee page.
+ */
+export function cheapestComparable(r: Runner): Runner | null {
+  if (r.vcpu == null) return null
+  let best: Runner | null = null
+  for (const m of runners) {
+    if (m.os !== r.os || m.arch !== r.arch || m.vcpu == null || m.vcpu < r.vcpu || m.price <= 0) continue
+    if (!best || m.price < best.price) best = m
+  }
+  return best
 }

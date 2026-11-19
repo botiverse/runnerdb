@@ -36,8 +36,8 @@ function ThemeToggle() {
   )
 }
 
-// root: relative path from the current page to the site root ('./' on the main page, '../' on flat-fee/).
-export function SiteHeader({ root = './', current = 'main' }: { root?: string; current?: 'main' | 'flat' }) {
+// root: relative path from the current page to the site root ('./' on the main page, '../' on calculator/ and flat-fee/).
+export function SiteHeader({ root = './', current = 'main' }: { root?: string; current?: 'main' | 'calc' | 'flat' }) {
   return (
     <header className="sticky top-0 z-40 border-b bg-background/75 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-4 sm:px-6 lg:px-8">
@@ -47,6 +47,7 @@ export function SiteHeader({ root = './', current = 'main' }: { root?: string; c
         </a>
         <nav className="hidden items-center gap-1 text-sm text-muted-foreground md:flex" aria-label="Main">
           <a href={root} aria-current={current === 'main' ? 'page' : undefined} className={cn('rounded-md px-2.5 py-1.5 transition-colors hover:text-foreground', current === 'main' && 'text-foreground')}>Per-minute</a>
+          <a href={`${root}calculator/`} aria-current={current === 'calc' ? 'page' : undefined} className={cn('rounded-md px-2.5 py-1.5 transition-colors hover:text-foreground', current === 'calc' && 'text-foreground')}>Cost calculator</a>
           <a href={`${root}flat-fee/`} aria-current={current === 'flat' ? 'page' : undefined} className={cn('rounded-md px-2.5 py-1.5 transition-colors hover:text-foreground', current === 'flat' && 'text-foreground')}>Flat-fee plans</a>
           <a href={`${root}api.json`} className="rounded-md px-2.5 py-1.5 font-mono text-[13px] transition-colors hover:text-foreground">api.json</a>
           <a href={`${root}schema.json`} className="rounded-md px-2.5 py-1.5 font-mono text-[13px] transition-colors hover:text-foreground">schema.json</a>
@@ -128,6 +129,7 @@ export function SiteFooter({ root = './' }: { root?: string }) {
         <div className="flex flex-col gap-3 md:items-end">
           <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label="Footer">
             <a className="hover:text-foreground" href={REPO}>GitHub</a>
+            <a className="hover:text-foreground" href={`${root}calculator/`}>Cost calculator</a>
             <a className="hover:text-foreground" href={`${root}flat-fee/`}>Flat-fee plans</a>
             <a className="font-mono text-[13px] hover:text-foreground" href={`${root}api.json`}>api.json</a>
             <a className="font-mono text-[13px] hover:text-foreground" href={`${root}schema.json`}>schema.json</a>

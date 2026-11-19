@@ -5,6 +5,7 @@ An open, static dataset of **CI runner prices, specs and billing rules**: what a
 - Browse: <https://runnerdb.stamp.build>
 - API: <https://runnerdb.stamp.build/api.json>
 - Schema: <https://runnerdb.stamp.build/schema.json>
+- Cost calculator: <https://runnerdb.stamp.build/calculator/> (monthly cost of every runner, per-minute and flat-fee, for your minutes and concurrency; runs in the browser)
 
 Every price has a `source_url` and a `verified_as_of` date, so you can see where a number came from and when someone last checked it.
 
@@ -21,7 +22,7 @@ Every price has a `source_url` and a `verified_as_of` date, so you can see where
 | RunsOn | `providers/runs-on` | Flex predefined Linux runners. $0 per minute: you pay AWS directly plus a flat annual license |
 | Cirrus Runners | `providers/cirrus-runners` | macOS, Linux x64/ARM, Linux GPU. $0 per minute: flat $150/month per concurrency unit |
 
-Providers that bill a flat fee or license instead of per minute (RunsOn, Cirrus Runners) have `billing.unit: "flat"`, `price_usd_per_minute: 0` and a `flat_fee` on each runner. They aren't directly comparable with per-minute prices, so the site lists them on a separate page, [Flat-fee & license plans](https://runnerdb.stamp.build/flat-fee/), not in the main table. `api.json` includes all providers. Each provider's `billing.notes` describes its real cost model.
+Providers that bill a flat fee or license instead of per minute (RunsOn, Cirrus Runners) have `billing.unit: "flat"`, `price_usd_per_minute: 0` and a `flat_fee` on each runner. They aren't directly comparable with per-minute prices, so the site lists them on a separate page, [Flat-fee & license plans](https://runnerdb.stamp.build/flat-fee/), not in the main table. The [cost calculator](https://runnerdb.stamp.build/calculator/) puts both kinds side by side: per-minute runners cost minutes × `price_usd_per_minute`, flat-fee runners `flat_fee.amount_usd` (per month, or per year / 12) × concurrent jobs. Runners without a fixed `amount_usd` (RunsOn: AWS cost + license) are listed but not ranked. `api.json` includes all providers. Each provider's `billing.notes` describes its real cost model.
 
 **Wanted, contributions welcome:** GitLab SaaS runners, CircleCI, GitHub Linux/Windows larger runners and GPU runners. Please add only prices you can link to a public source. (BuildJet for GitHub Actions has shut down and is not listed.)
 

@@ -1,7 +1,9 @@
+import { Fragment } from 'react'
 import { ArrowLeftIcon, ExternalLinkIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { ArchBadge, LabelChip, OsBadge, ProviderAvatar } from '@/components/runner-bits'
-import { flatProviders, formatDate, type Runner } from '@/lib/data'
+import { MINUTES_PER_MONTH, cheapestComparable, flatProviders, formatDate, formatPerMinute, type Runner } from '@/lib/data'
 
 // Providers billed by a flat fee or license (billing.unit "flat"). They have no per-minute price, so
 // they are listed here, one table per provider, instead of in the main per-minute table.
@@ -28,6 +30,39 @@ function Fee({ r }: { r: Runner }) {
     <div className="flex flex-col gap-0.5">
       <span className="text-[13px] font-semibold tracking-tight whitespace-nowrap text-foreground">{r.flatFee}</span>
       {r.flatFeeNotes && <span className="text-[11px] leading-snug text-muted-foreground">{r.flatFeeNotes}</span>}
+    </div>
+  )
+}
+
+// Break-even against the cheapest per-minute runner with the same OS and arch and at least as many vCPU:
+// the flat fee wins above fee / price minutes per month (one concurrent job). Omitted without a fixed fee
+// or a comparable runner.
+function breakEven(r: Runner) {
+  if (r.flatMonthly == null) return null
+  const m = cheapestComparable(r)
+  if (!m) return null
+  return { m, minutes: Math.ceil(r.flatMonthly / m.price), busy: r.flatMonthly / MINUTES_PER_MONTH }
+}
+
+function BreakEven({ r, inline = false }: { r: Runner; inline?: boolean }) {
+  const b = breakEven(r)
+  if (!b) return null
+  return (
+    <div
+      className={cn(
+        'flex rounded-md border border-brand/20 bg-brand-soft/60 px-2.5 py-1.5 text-xs leading-snug text-muted-foreground',
+        inline ? 'flex-wrap items-center gap-x-3 gap-y-0.5' : 'mt-3 flex-col gap-0.5',
+      )}
+    >
+      <span>
+        Cheaper than the cheapest comparable per-minute runner ({b.m.providerShort} <code className="font-mono text-foreground/80">{b.m.id}</code>, {formatPerMinute(b.m.price)}/min) above{' '}
+        <span className="font-semibold text-foreground tabular-nums">{b.minutes.toLocaleString('en-US')} min/month</span>
+        {b.minutes > MINUTES_PER_MONTH && ' (more than one job can run in a month)'}
+      </span>
+      {inline && <span aria-hidden="true" className="text-muted-foreground/50">·</span>}
+      <span>
+        ≈ <span className="font-mono font-medium text-foreground">{formatPerMinute(b.busy)}/min</span> if busy all month
+      </span>
     </div>
   )
 }
@@ -82,7 +117,8 @@ function ProviderSection({ p }: { p: (typeof flatProviders)[number] }) {
           </TableHeader>
           <TableBody>
             {p.runners.map((r) => (
-              <TableRow key={r.key}>
+              <Fragment key={r.key}>
+              <TableRow className={cn(breakEven(r) && 'border-b-0')}>
                 <TableCell className="px-2.5 py-3 pl-5 align-top">
                   <div className="font-mono text-[13px] font-medium tracking-tight text-foreground">{r.id}</div>
                   {r.osVersion && <div className="text-xs text-muted-foreground">{r.osVersion}</div>}
@@ -107,6 +143,14 @@ function ProviderSection({ p }: { p: (typeof flatProviders)[number] }) {
                   {r.notes ? <p className="line-clamp-3 text-xs leading-snug text-muted-foreground" title={r.notes}>{r.notes}</p> : <Dash />}
                 </TableCell>
               </TableRow>
+              {breakEven(r) && (
+                <TableRow className="hover:bg-transparent">
+                  <TableCell colSpan={6} className="px-2.5 pt-0 pb-3 pl-5 pr-5 whitespace-normal">
+                    <BreakEven r={r} inline />
+                  </TableCell>
+                </TableRow>
+              )}
+              </Fragment>
             ))}
           </TableBody>
         </Table>
@@ -133,6 +177,7 @@ function ProviderSection({ p }: { p: (typeof flatProviders)[number] }) {
                 <LabelChip key={l} label={l} className="h-auto min-h-6 py-0.5 text-left whitespace-normal [overflow-wrap:anywhere]" />
               ))}
             </div>
+            <BreakEven r={r} />
             {(r.flatFeeNotes || r.notes) && (
               <div className="mt-3 space-y-1 text-xs leading-snug text-muted-foreground">
                 {r.flatFeeNotes && <p>{r.flatFeeNotes}</p>}
@@ -170,7 +215,9 @@ export function FlatFeePage() {
         ))}
       </div>
       <p className="mt-6 text-xs text-muted-foreground">
-        Fees as listed on each provider's pricing page, before discounts. Click a label to copy it; confirm at the source before relying on them.
+        Fees as listed on each provider's pricing page, before discounts. Click a label to copy it; confirm fees at the source before relying on them. Break-even compares one concurrent job with the cheapest per-minute
+        runner of the same OS and arch and at least as many vCPU; a month is {MINUTES_PER_MONTH.toLocaleString('en-US')} minutes. For your own numbers, try the{' '}
+        <a href="../calculator/" className="font-medium text-foreground underline underline-offset-4 hover:text-brand-fg">cost calculator</a>.
       </p>
     </>
   )
