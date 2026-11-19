@@ -1,0 +1,20 @@
+{
+  "id": "standard-4-arm64",
+  "labels": [
+    "ubicloud-standard-4-arm",
+    "ubicloud-standard-4-arm-ubuntu-2604",
+    "ubicloud-standard-4-arm-ubuntu-2404",
+    "ubicloud-standard-4-arm-ubuntu-2204"
+  ],
+  "os": "linux",
+  "os_version": "ubuntu-24.04",
+  "arch": "arm64",
+  "vcpu": 4,
+  "memory_gb": 12,
+  "disk_gb": 150,
+  "price_usd_per_minute": 0.0025,
+  "public_repo_free": false,
+  "source_url": "https://www.ubicloud.com/docs/about/pricing",
+  "verified_as_of": "2026-11-19",
+  "notes": "arm64 runner."
+}
