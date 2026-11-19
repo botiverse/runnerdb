@@ -1,0 +1,19 @@
+{
+  "id": "windows-x64-16x32",
+  "labels": [
+    "nscloud-windows-*-amd64-16x32",
+    "nscloud-windows-*-amd64-16x32-with-*"
+  ],
+  "os": "windows",
+  "os_version": "windows-2022",
+  "arch": "x64",
+  "vcpu": 16,
+  "memory_gb": 32,
+  "disk_gb": 160,
+  "price_usd_per_minute": 0.048,
+  "multiplier": 32,
+  "public_repo_free": false,
+  "source_url": "https://namespace.so/pricing",
+  "verified_as_of": "2026-11-19",
+  "notes": "Machine label nscloud-windows-2022-amd64-16x32. Windows platform multiplier 2x. Not available on the pay-as-you-go Developer plan (Team plan or higher). Price is the overage rate; plan-included minutes cost $0.001/unit."
+}

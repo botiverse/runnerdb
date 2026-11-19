@@ -1,0 +1,16 @@
+{
+  "name": "Namespace",
+  "homepage": "https://namespace.so",
+  "pricing_url": "https://namespace.so/pricing",
+  "billing": {
+    "unit": "minute",
+    "rounding": "unknown",
+    "base_rate_usd": 0.0015,
+    "notes": "Usage is metered in unit minutes: max(vCPU, RAM GB / 2) x minutes x platform multiplier (Linux 1, Windows 2, macOS 10, Linux on Apple Silicon 7). The runner \"multiplier\" is the unit minutes per runtime minute. base_rate_usd is the pay-as-you-go/overage rate per unit minute ($0.0015); minutes included in the Team ($100/month, 100,000 units) and Business ($250/month, 250,000 units) plans work out to $0.001/unit. Rounding: minimum 1 minute per instance, after which the first 15 seconds of each further minute are rounded down (70 s = 1 minute, 150 s = 3 minutes); runnerdb's rounding enum cannot express this, so it is set to \"unknown\". Label grammar: https://namespace.so/docs/reference/github-actions/runner-configuration; all shapes and disk sizes: https://namespace.so/docs/architecture/compute/machine-shapes"
+  },
+  "public_repo_policy": "billed",
+  "free_tier": {
+    "notes": "30-day free trial. The Developer plan is pay-as-you-go with lower concurrency (32 Linux vCPU, 12 macOS vCPU) and no Windows. Open-source projects can apply to an OSS program. Not applied in runnerdb prices."
+  },
+  "notes": "runnerdb lists Namespace's standard GitHub Actions shapes; many more shapes (1x2, 2x8, 8x32, 32x128 ... 64x512, macOS 4x7 ... 16x56, Linux on Apple Silicon) are priced on the pricing page and follow the same unit-minute formula. Larger shapes need the Business plan."
+}
