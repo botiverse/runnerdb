@@ -17,6 +17,10 @@ export default function App() {
           <p className="mt-4 text-xs text-muted-foreground">
             List prices in USD per runtime minute, before plan quotas, discounts and per-job rounding. Click a label to copy it; confirm prices at the source before relying on them.
           </p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Plans billed per month or per license are on a{' '}
+            <a href="./flat-fee/" className="font-medium text-foreground underline underline-offset-4 hover:text-brand-fg">separate page</a>.
+          </p>
         </main>
         <SiteFooter />
       </div>

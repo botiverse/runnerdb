@@ -72,7 +72,6 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       id: 'vcpu',
       accessorFn: (r) => r.vcpu ?? undefined,
       meta: { title: 'vCPU' },
-      sortUndefined: 'last',
       sortingFn: 'basic',
       header: ({ column }) => <DataTableColumnHeader column={column} title="vCPU" align="right" />,
       cell: ({ row }) => (
@@ -83,7 +82,6 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       id: 'memory',
       accessorFn: (r) => r.memoryGb ?? undefined,
       meta: { title: 'Memory' },
-      sortUndefined: 'last',
       sortingFn: 'basic',
       header: ({ column }) => <DataTableColumnHeader column={column} title="RAM" align="right" />,
       cell: ({ row }) => (
@@ -94,19 +92,16 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
     },
     {
       id: 'price',
-      // Flat-fee runners have no per-minute price: sort them after all metered/free runners in both directions.
-      accessorFn: (r) => (r.flatFee ? undefined : r.price),
+      accessorKey: 'price',
       meta: { title: 'Price' },
-      sortUndefined: 'last',
       sortingFn: 'basic',
       header: ({ column }) => <DataTableColumnHeader column={column} title={`Price $/${unit}`} align="right" />,
-      cell: ({ row }) => <Price value={row.original.price} flatFee={row.original.flatFee} unit={unit} />,
+      cell: ({ row }) => <Price value={row.original.price} unit={unit} />,
     },
     {
       id: 'multiplier',
       accessorFn: (r) => r.multiplier ?? undefined,
       meta: { title: 'Multiplier' },
-      sortUndefined: 'last',
       sortingFn: 'basic',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Mult." align="right" />,
       cell: ({ row }) => (
@@ -117,7 +112,6 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       id: 'flex',
       accessorFn: (r) => r.flex ?? undefined,
       meta: { title: 'Flex discount' },
-      sortUndefined: 'last',
       sortingFn: 'basic',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Flex" align="right" />,
       cell: ({ row: { original: r } }) =>
