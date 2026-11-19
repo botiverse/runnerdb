@@ -3,11 +3,39 @@ import { ExternalLinkIcon } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { formatDate, formatPrice, type Runner, type Unit } from '@/lib/data'
 import { DataTableColumnHeader } from './column-header'
+import { HeaderHelp } from '@/components/header-help'
 import { ArchBadge, LabelChip, OsBadge, Price, ProviderAvatar, PublicFree } from '@/components/runner-bits'
 
 export const inSet: FilterFn<Runner> = (row, id, value: string[]) => value.includes(String(row.getValue(id)))
 
 const Dash = () => <span className="text-muted-foreground/60">–</span>
+
+// Header explanations (tooltip on hover, popover from the help icon). Keep in line with README.md's field reference.
+const HELP = {
+  runner: "Provider and runnerdb's ID for this runner: one machine size, OS and architecture.",
+  labels: (
+    <>
+      Exact labels to put in a workflow's <code className="font-mono">runs-on</code> to get this runner. <code className="font-mono">*</code> matches one or
+      more characters. Click a label to copy it.
+    </>
+  ),
+  os: 'Operating system of the runner image: Linux, Windows or macOS.',
+  arch: 'CPU architecture: x64 (Intel/AMD) or arm64.',
+  vcpu: 'Number of virtual CPUs. – means the provider has not published a verified count.',
+  memory: 'Memory (RAM) in GB, as published by the provider. – means not published.',
+  multiplier: "Billing multiplier: billed minutes = runtime minutes × multiplier, at the provider's base rate.",
+  flex: (
+    <>
+      Price factor for appending <code className="font-mono">;scheduling=flex</code> to the <code className="font-mono">runs-on</code> label (Blacksmith):
+      0.6× bills 60% of the list price.
+    </>
+  ),
+  publicFree: 'Free for public repositories: jobs from public repos are not billed.',
+  asOf: "Date this price was last checked against the provider's source. Click it to open the source.",
+}
+
+const priceHelp = (unit: Unit) =>
+  `List price in USD per runtime ${unit === 'h' ? 'hour (per-minute price × 60)' : 'minute'}, before plan quotas, discounts and per-job rounding.`
 
 export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
   return [
@@ -23,7 +51,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorFn: (r) => `${r.providerShort} ${r.id}`,
       meta: { title: 'Runner' },
       enableHiding: false,
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Runner" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Runner" help={HELP.runner} />,
       cell: ({ row: { original: r } }) => (
         <div className="flex items-center gap-3">
           <ProviderAvatar id={r.provider} name={r.providerName} />
@@ -40,9 +68,11 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       meta: { title: 'runs-on labels' },
       enableSorting: false,
       header: () => (
-        <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-          <code className="normal-case">runs-on</code> labels
-        </span>
+        <HeaderHelp help={HELP.labels} label="runs-on labels">
+          <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+            <code className="normal-case">runs-on</code> labels
+          </span>
+        </HeaderHelp>
       ),
       cell: ({ row: { original: r } }) => (
         <div className="flex min-w-[250px] max-w-[340px] flex-wrap gap-1 whitespace-normal">
@@ -57,7 +87,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorKey: 'os',
       meta: { title: 'OS' },
       filterFn: inSet,
-      header: ({ column }) => <DataTableColumnHeader column={column} title="OS" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="OS" help={HELP.os} />,
       cell: ({ row }) => <OsBadge os={row.original.os} />,
     },
     {
@@ -65,7 +95,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorKey: 'arch',
       meta: { title: 'Arch' },
       filterFn: inSet,
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Arch" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Arch" help={HELP.arch} />,
       cell: ({ row }) => <ArchBadge arch={row.original.arch} />,
     },
     {
@@ -73,7 +103,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorFn: (r) => r.vcpu ?? undefined,
       meta: { title: 'vCPU' },
       sortingFn: 'basic',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="vCPU" align="right" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="vCPU" help={HELP.vcpu} align="right" />,
       cell: ({ row }) => (
         <div className="text-right font-mono tabular-nums">{row.original.vcpu ?? <Dash />}</div>
       ),
@@ -83,7 +113,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorFn: (r) => r.memoryGb ?? undefined,
       meta: { title: 'Memory' },
       sortingFn: 'basic',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="RAM" align="right" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="RAM" help={HELP.memory} align="right" />,
       cell: ({ row }) => (
         <div className="text-right font-mono tabular-nums">
           {row.original.memoryGb == null ? <Dash /> : <>{row.original.memoryGb}<span className="text-muted-foreground"> GB</span></>}
@@ -95,7 +125,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorKey: 'price',
       meta: { title: 'Price' },
       sortingFn: 'basic',
-      header: ({ column }) => <DataTableColumnHeader column={column} title={`Price $/${unit}`} align="right" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title={`Price $/${unit}`} help={priceHelp(unit)} align="right" />,
       cell: ({ row }) => <Price value={row.original.price} unit={unit} />,
     },
     {
@@ -103,7 +133,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorFn: (r) => r.multiplier ?? undefined,
       meta: { title: 'Multiplier' },
       sortingFn: 'basic',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Mult." align="right" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Mult." help={HELP.multiplier} align="right" />,
       cell: ({ row }) => (
         <div className="text-right font-mono tabular-nums">{row.original.multiplier == null ? <Dash /> : `${row.original.multiplier}×`}</div>
       ),
@@ -113,7 +143,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorFn: (r) => r.flex ?? undefined,
       meta: { title: 'Flex discount' },
       sortingFn: 'basic',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Flex" align="right" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Flex" help={HELP.flex} align="right" />,
       cell: ({ row: { original: r } }) =>
         r.flex == null ? (
           <div className="text-right"><Dash /></div>
@@ -134,7 +164,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       id: 'publicFree',
       accessorFn: (r) => (r.publicFree ? 1 : 0),
       meta: { title: 'Free on public repos' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Public" align="center" className="mx-auto" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Public" help={HELP.publicFree} align="center" />,
       cell: ({ row }) => (
         <div className="flex justify-center">
           <PublicFree free={row.original.publicFree} />
@@ -145,7 +175,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       id: 'asOf',
       accessorKey: 'asOf',
       meta: { title: 'Verified' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Verified" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Verified" help={HELP.asOf} />,
       cell: ({ row: { original: r } }) => (
         <a
           href={r.source}
