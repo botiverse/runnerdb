@@ -1,0 +1,18 @@
+{
+  "id": "windows-x64-4",
+  "labels": [
+    "depot-windows-2025-4",
+    "depot-windows-2022-4"
+  ],
+  "os": "windows",
+  "os_version": "windows-2025",
+  "arch": "x64",
+  "vcpu": 4,
+  "memory_gb": 16,
+  "disk_gb": 130,
+  "price_usd_per_minute": 0.016,
+  "public_repo_free": false,
+  "source_url": "https://depot.dev/docs/github-actions/runner-types",
+  "verified_as_of": "2026-11-19",
+  "notes": "Intel instance. Depot lists a 4x minutes multiplier for this size. No Hyper-V (EC2 limitation), so Docker is unlikely to work."
+}

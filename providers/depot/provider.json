@@ -1,0 +1,15 @@
+{
+  "name": "Depot",
+  "homepage": "https://depot.dev",
+  "pricing_url": "https://depot.dev/pricing",
+  "billing": {
+    "unit": "second",
+    "rounding": "per_second",
+    "notes": "Per-minute rates, tracked per second with no one-minute minimum (pricing FAQ: \"if you run a 30-second ... GitHub Actions job, you'll only be billed for 30 seconds\"). Depot also shows a \"minutes multiplier\" per runner (billed minutes = elapsed minutes x multiplier, counted against plan minutes); its multipliers are not proportional to the listed per-minute prices for Windows, so runnerdb stores the listed per-minute prices and mentions the multiplier in runner notes. Runner specs and prices: https://depot.dev/docs/github-actions/runner-types"
+  },
+  "public_repo_policy": "billed",
+  "free_tier": {
+    "notes": "No free plan; 7-day trial. Developer plan ($20/month) includes 2,000 GitHub Actions minutes and Startup ($200/month) 20,000, measured at the base 2-vCPU Linux rate. Additional usage $0.006/minute for the base runner. Discounts for non-profits/open source on request. Not applied in runnerdb prices."
+  },
+  "notes": "Public and private repositories are billed alike (open-source discounts on request)."
+}
