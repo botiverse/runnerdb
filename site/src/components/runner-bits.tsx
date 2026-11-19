@@ -1,7 +1,7 @@
 import { toast } from 'sonner'
 import type { ReactNode } from 'react'
 import { AppWindowIcon, CheckIcon, CommandIcon } from 'lucide-react'
-import { BlacksmithIcon, CirrusIcon, DepotIcon, GitHubIcon, LinuxIcon, NamespaceIcon, WarpBuildIcon, runsOnIconUrl, ubicloudIconUrl } from '@/components/icons'
+import { BlacksmithIcon, CirrusIcon, DepotIcon, GitHubIcon, LinuxIcon, NamespaceIcon, runsOnIconUrl, ubicloudIconUrl } from '@/components/icons'
 import { cn } from '@/lib/utils'
 import { OS_LABEL, formatPrice, maxPrice, type Runner, type Unit } from '@/lib/data'
 
@@ -17,7 +17,6 @@ const PROVIDER_ICON: Record<string, { className: string; icon: ReactNode }> = {
   depot: { className: NEUTRAL, icon: <DepotIcon className="size-[58%]" /> },
   namespace: { className: NEUTRAL, icon: <NamespaceIcon className="size-[78%]" /> },
   ubicloud: { className: 'bg-[#FF5C12] ring-black/10 dark:ring-white/10', icon: <img src={ubicloudIconUrl} alt="" className="size-full" /> },
-  warpbuild: { className: NEUTRAL, icon: <WarpBuildIcon className="size-[84%]" /> },
   'runs-on': { className: 'bg-[#101010] ring-black/10 dark:ring-white/15', icon: <img src={runsOnIconUrl} alt="" className="size-full" /> },
   'cirrus-runners': { className: cn(NEUTRAL, 'text-[#181717] dark:text-white'), icon: <CirrusIcon className="size-[62%]" /> },
 }
