@@ -38,6 +38,7 @@ schema/
   provider.schema.json       # JSON Schema (draft 2020-12)
   runner.schema.json
 build.mjs                    # validator + api.json/schema.json builder (no dependencies)
+scripts/fetch-prices.mjs     # daily price check against the providers' pricing pages (no dependencies)
 site/                        # the web page: Vite + React + Tailwind, shadcn/ui + TanStack Table
 ```
 
@@ -107,6 +108,30 @@ curl -s https://runnerdb.stamp.build/api.json | jq '.providers.github.runners["l
 To price a job: look up the runner whose `labels` match the job's `runs-on`, then compute `ceil(minutes) × price_usd_per_minute` when `billing.rounding` is `per_job_ceil`. Multiply by `scheduling_discounts.<mode>` if the job uses that mode, and check `public_repo_free` for public repositories. Plan quotas and negotiated discounts are out of scope.
 
 Prices change. Use `as_of`/`verified_as_of` to decide how much to trust a number, and confirm against `source_url` before relying on it for anything that matters.
+
+## Daily price check
+
+A scheduled workflow ([`.github/workflows/daily-prices.yml`](.github/workflows/daily-prices.yml), daily at 06:17 UTC, or run it by hand from the Actions tab) runs [`scripts/fetch-prices.mjs`](scripts/fetch-prices.mjs). The script has one fetcher per provider. Each fetcher downloads the provider's official pricing source (a markdown or JSON version where the provider publishes one, otherwise the pricing page HTML) and reads every runner's price:
+
+- **Price changed:** writes the new `price_usd_per_minute` (and `multiplier` for multiplier-billed providers) and sets `verified_as_of` to today.
+- **Price unchanged:** sets `verified_as_of` to today.
+- **Runner or price not found** (usually a page redesign): that provider's files are left untouched and the script exits non-zero. A stale price is never re-dated.
+- **SKU on the pricing page but not in runnerdb:** listed in the summary, never added automatically.
+
+The workflow then runs `node build.mjs --check` and opens or updates a pull request from `bot/daily-prices`, with the markdown summary as its body:
+
+- Price changes are proposed the same day ("Update runner prices (N changed)").
+- Date-only re-verifications are committed weekly, on Mondays or when the workflow is run by hand ("Re-verify prices (no changes)"). A daily PR that touches more than 100 files just to move a date would be noise, and a `verified_as_of` up to a week old is still recent enough. While a bot PR is open, it is refreshed every day. If the data matches the default branch again, the PR is closed.
+- If any fetcher fails, the job still opens the PR for the providers that checked out, then fails, so GitHub notifies the maintainers.
+
+Run it locally:
+
+```sh
+node scripts/fetch-prices.mjs --dry-run            # check everything, write nothing
+node scripts/fetch-prices.mjs --provider depot     # check one provider and write the result
+```
+
+The workflow uses `GITHUB_TOKEN` and needs the repository setting **Allow GitHub Actions to create and approve pull requests** (Settings > Actions > General). PRs opened with `GITHUB_TOKEN` don't trigger other workflows, so `check.yml` won't run on them; the price workflow runs `node build.mjs --check` itself before it pushes.
 
 ## Contributing
 
