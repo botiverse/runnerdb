@@ -58,8 +58,23 @@ Reusing runnerdb's code or data does not grant any right to use these marks.
   Used unmodified for nominative identification.
 
 - Cirrus Runners name and Cirrus Labs mark: Cirrus Labs, Inc.
-  Mark source: Simple Icons "Cirrus CI" (path data CC0-1.0, https://simpleicons.org,
-    https://github.com/simple-icons/simple-icons); the same mark is the logo of
+  Mark source: Simple Icons "Cirrus CI" (https://simpleicons.org,
+    https://github.com/simple-icons/simple-icons; the project is CC0-1.0 and lists no
+    separate license for this icon); the same mark is the logo of
     https://cirrus-runners.app (assets/images/logo.svg). Monochrome, shown in black or white.
   Guidelines: no published guidelines found; terms: https://cirrus-runners.app/company/terms/
   Used unmodified for nominative identification.
+
+Operating system icons
+----------------------
+- Linux: Tux, from Simple Icons "Linux" (https://simpleicons.org; the project is
+  CC0-1.0 and lists no separate license for this icon). Tux was originally drawn by
+  Larry Ewing (lewing@isc.tamu.edu) with The GIMP. Linux is a registered trademark
+  of Linus Torvalds. Used for nominative identification of the operating system.
+- macOS and Windows: no Apple or Microsoft logo is used. Apple's guidelines
+  (https://www.apple.com/legal/intellectual-property/guidelinesfor3rdparties.html)
+  and Microsoft's (https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks)
+  do not allow their logos on third-party websites without a license. The page uses
+  neutral Lucide glyphs instead (https://lucide.dev, ISC license): "command" for macOS
+  and "app-window" for Windows. macOS is a trademark of Apple Inc.; Windows is a
+  trademark of Microsoft Corporation; the names are used only to identify the OS.
