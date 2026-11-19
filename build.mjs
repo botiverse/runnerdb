@@ -294,7 +294,7 @@ function renderHTML(api) {
 <body>
 <h1>runnerdb</h1>
 <p>Open dataset of CI runner prices, specs and billing rules. Data as of ${api.as_of}.
-JSON: <a href="api.json">api.json</a> &middot; <a href="schema.json">schema.json</a></p>
+JSON: <a href="api.json">api.json</a> &middot; <a href="schema.json">schema.json</a> &middot; Source and corrections: <a href="https://github.com/botiverse/runnerdb">github.com/botiverse/runnerdb</a></p>
 <p>Prices are list prices in USD per runtime minute, before plan quotas, discounts and per-job rounding. Click a column to sort.</p>
 <input id="q" type="search" placeholder="Filter (provider, label, os...)" aria-label="Filter">
 <table>
