@@ -1,0 +1,17 @@
+{
+  "id": "ubuntu-arm64-6x-xfast",
+  "labels": [
+    "warp-ubuntu-2604-arm64-6x-xfast"
+  ],
+  "os": "linux",
+  "os_version": "ubuntu-26.04",
+  "arch": "arm64",
+  "vcpu": 6,
+  "memory_gb": 14,
+  "disk_gb": 150,
+  "price_usd_per_minute": 0.08,
+  "public_repo_free": false,
+  "source_url": "https://www.warpbuild.com/pricing",
+  "verified_as_of": "2026-11-19",
+  "notes": "Ubuntu 26.04 arm64 VM on Apple Silicon (M4 Pro / M5 Pro) hosts (\"arm64 on Apple Silicon\" on the pricing page)."
+}

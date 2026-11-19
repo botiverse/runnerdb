@@ -1,0 +1,20 @@
+{
+  "id": "ubuntu-x64-32x",
+  "labels": [
+    "warp-ubuntu-latest-x64-32x",
+    "warp-ubuntu-2404-x64-32x",
+    "warp-ubuntu-2604-x64-32x",
+    "warp-ubuntu-2204-x64-32x"
+  ],
+  "os": "linux",
+  "os_version": "ubuntu-24.04",
+  "arch": "x64",
+  "vcpu": 32,
+  "memory_gb": 128,
+  "disk_gb": 150,
+  "price_usd_per_minute": 0.064,
+  "public_repo_free": false,
+  "source_url": "https://www.warpbuild.com/pricing",
+  "verified_as_of": "2026-11-19",
+  "notes": "Labels from https://www.warpbuild.com/docs/ci/cloud-runners"
+}

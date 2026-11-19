@@ -1,0 +1,15 @@
+{
+  "name": "WarpBuild",
+  "homepage": "https://www.warpbuild.com",
+  "pricing_url": "https://www.warpbuild.com/pricing",
+  "billing": {
+    "unit": "minute",
+    "rounding": "unknown",
+    "notes": "Pricing FAQ: \"CI runners are billed on a per-minute basis\"; per-job rounding of partial minutes is not stated for runners. Cache, snapshots and Docker builders are billed separately. BYOC (runners in your own AWS/GCP/Azure account) costs $0.002/minute on top of your cloud bill and is not listed here. Runner labels: https://www.warpbuild.com/docs/ci/cloud-runners"
+  },
+  "public_repo_policy": "billed",
+  "free_tier": {
+    "notes": "Sign-up without a credit card; the pricing FAQ mentions free usage/credit limits before a payment method is needed, but no amount is published. Not applied in runnerdb prices."
+  },
+  "notes": "WarpBuild registers as a self-hosted runner; public repositories must be allowed in the runner group settings. Public and private repositories are billed alike."
+}

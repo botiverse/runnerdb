@@ -1,0 +1,19 @@
+{
+  "id": "ubuntu-arm64-16x",
+  "labels": [
+    "warp-ubuntu-latest-arm64-16x",
+    "warp-ubuntu-2404-arm64-16x",
+    "warp-ubuntu-2604-arm64-16x"
+  ],
+  "os": "linux",
+  "os_version": "ubuntu-24.04",
+  "arch": "arm64",
+  "vcpu": 16,
+  "memory_gb": 64,
+  "disk_gb": 150,
+  "price_usd_per_minute": 0.024,
+  "public_repo_free": false,
+  "source_url": "https://www.warpbuild.com/pricing",
+  "verified_as_of": "2026-11-19",
+  "notes": "Ubuntu 22.04 arm64 images were deprecated on 2025-03-31. Labels from https://www.warpbuild.com/docs/ci/cloud-runners"
+}
