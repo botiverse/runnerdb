@@ -12,14 +12,14 @@ import { MINUTES_PER_MONTH, cheapestComparable, flatProviders, formatDate, forma
 // Header explanations (tooltip on hover, popover from the help icon).
 const HEADER_HELP: Record<string, string> = {
   'runs-on labels': "Exact labels to put in a workflow's runs-on to get this runner. * matches one or more characters. Click a label to copy it.",
-  'vCPU / RAM': 'Virtual CPUs and memory in GB, as published by the provider. – means not published.',
+  'vCPU / RAM / Disk': 'Virtual CPUs, memory (RAM) in GB and disk (storage) in GB, as published by the provider. – means not published.',
   Fee: 'Fixed fee or license per period, not metered per minute. "AWS cost + license": you also pay AWS for the instances in your own account.',
 }
 
 const Dash = () => <span className="text-muted-foreground/60">–</span>
 
 function Specs({ r }: { r: Runner }) {
-  if (r.vcpu == null && r.memoryGb == null) return <Dash />
+  if (r.vcpu == null && r.memoryGb == null && r.diskGb == null) return <Dash />
   return (
     <span className="font-mono text-[13px] whitespace-nowrap tabular-nums">
       {r.vcpu ?? '–'} <span className="text-muted-foreground">vCPU</span>
@@ -27,6 +27,12 @@ function Specs({ r }: { r: Runner }) {
         <>
           {' · '}
           {r.memoryGb} <span className="text-muted-foreground">GB</span>
+        </>
+      )}
+      {r.diskGb != null && (
+        <>
+          {' · '}
+          {r.diskGb} <span className="text-muted-foreground">GB disk</span>
         </>
       )}
     </span>
@@ -110,7 +116,7 @@ function ProviderSection({ p }: { p: (typeof flatProviders)[number] }) {
         <Table>
           <TableHeader className="bg-muted/40">
             <TableRow className="hover:bg-transparent">
-              {['Runner', 'runs-on labels', 'OS / arch', 'vCPU / RAM', 'Fee', 'Notes'].map((h) => (
+              {['Runner', 'runs-on labels', 'OS / arch', 'vCPU / RAM / Disk', 'Fee', 'Notes'].map((h) => (
                 <TableHead key={h} className="h-11 px-2.5 text-xs font-medium tracking-wide text-muted-foreground uppercase first:pl-5 last:pr-5">
                   {(() => {
                     const label = h === 'runs-on labels' ? <><code className="normal-case">runs-on</code> labels</> : h

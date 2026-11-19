@@ -16,6 +16,7 @@ type ApiRunner = {
   public_repo_free: boolean
   scheduling_discounts?: Record<string, number>
   source_url: string
+  specs_url?: string
   verified_as_of: string
   notes?: string
   as_of: string
@@ -46,6 +47,7 @@ export type Runner = {
   arch: ApiRunner['arch']
   vcpu: number | null
   memoryGb: number | null
+  diskGb: number | null
   price: number
   /** Short text for flat-fee/license runners (billing.unit "flat"); null for metered runners. */
   flatFee: string | null
@@ -84,6 +86,7 @@ const toRunners = (p: ApiProvider): Runner[] =>
     arch: r.arch,
     vcpu: r.vcpu,
     memoryGb: r.memory_gb ?? null,
+    diskGb: r.disk_gb ?? null,
     price: r.price_usd_per_minute,
     flatFee: r.flat_fee?.summary ?? null,
     flatFeeNotes: r.flat_fee?.notes ?? null,

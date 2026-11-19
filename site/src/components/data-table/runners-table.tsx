@@ -60,6 +60,7 @@ export function RunnersTable() {
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
     provider: false,
     memory: hasAny((r) => r.memoryGb),
+    disk: hasAny((r) => r.diskGb),
     multiplier: hasAny((r) => r.multiplier),
     flex: hasAny((r) => r.flex),
   })
@@ -171,7 +172,7 @@ export function RunnersTable() {
                     <TableHead
                       key={h.id}
                       aria-sort={s === 'asc' ? 'ascending' : s === 'desc' ? 'descending' : undefined}
-                      className={cn('h-11 px-2.5 first:pl-5 last:pr-5', ['vcpu', 'memory', 'price', 'multiplier', 'flex'].includes(h.column.id) && 'text-right', h.column.id === 'publicFree' && 'text-center')}
+                      className={cn('h-11 px-2.5 first:pl-5 last:pr-5', ['vcpu', 'memory', 'disk', 'price', 'multiplier', 'flex'].includes(h.column.id) && 'text-right', h.column.id === 'publicFree' && 'text-center')}
                     >
                       {h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}
                     </TableHead>
@@ -220,7 +221,7 @@ export function RunnersTable() {
             <div className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm">
               <OsBadge os={r.os} />
               <ArchBadge arch={r.arch} />
-              {[r.vcpu != null && `${r.vcpu} vCPU`, r.multiplier != null && `${r.multiplier}× mult`, r.flex != null && `flex ${r.flex}×`]
+              {[r.vcpu != null && `${r.vcpu} vCPU`, r.memoryGb != null && `${r.memoryGb} GB RAM`, r.diskGb != null && `${r.diskGb} GB disk`, r.multiplier != null && `${r.multiplier}× mult`, r.flex != null && `flex ${r.flex}×`]
                 .filter(Boolean)
                 .map((t) => (
                   <span key={String(t)} className="font-mono text-xs text-muted-foreground tabular-nums">{t}</span>

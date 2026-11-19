@@ -10,6 +10,7 @@
   "os_version": "ubuntu-24.04",
   "arch": "x64",
   "vcpu": null,
+  "memory_gb": 4,
   "price_usd_per_minute": 0,
   "flat_fee": {
     "summary": "AWS cost + license",
@@ -19,5 +20,5 @@
   "public_repo_free": true,
   "source_url": "https://runs-on.com/docs/runners/platforms/linux/",
   "verified_as_of": "2026-11-19",
-  "notes": "RunsOn Flex predefined runner \"1cpu-linux-x64\" (EC2 families c8, m8a, t8i; memory 4 GiB; Spot by default, spot=false for on-demand). vCPU is \"1 or 2\" depending on the instance picked, so vcpu is null. $0 is RunsOn's per-minute charge only: the EC2 instance, EBS and traffic are billed by AWS to your account at AWS prices (to the second); RunsOn adds a flat annual license. See the provider notes."
+  "notes": "RunsOn Flex predefined runner \"1cpu-linux-x64\" (EC2 families c8, m8a, t8i; memory 4 GiB; Spot by default, spot=false for on-demand). vCPU is \"1 or 2\" depending on the instance picked, so vcpu is null. $0 is RunsOn's per-minute charge only: the EC2 instance, EBS and traffic are billed by AWS to your account at AWS prices (to the second); RunsOn adds a flat annual license. See the provider notes. memory_gb 4 is the published \"4 GiB\". Root disk: an EBS volume whose size is set per job with the volume= label; the docs do not publish a default size, so disk_gb is left out."
 }

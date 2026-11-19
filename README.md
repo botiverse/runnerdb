@@ -7,7 +7,7 @@ An open, static dataset of **CI runner prices, specs and billing rules**: what a
 - Schema: <https://runnerdb.stamp.build/schema.json>
 - Cost calculator: <https://runnerdb.stamp.build/calculator/> (monthly cost of every runner, per-minute and flat-fee, for your minutes and concurrency; runs in the browser)
 
-Every price has a `source_url` and a `verified_as_of` date, so you can see where a number came from and when someone last checked it.
+Every price has a `source_url` and a `verified_as_of` date, so you can see where a number came from and when someone last checked it. Hardware specs (vCPU, RAM, disk) come from the same page or, when the provider publishes them elsewhere, from the runner's `specs_url`.
 
 ## Coverage
 
@@ -67,7 +67,8 @@ site/                        # the web page: Vite + React + Tailwind, shadcn/ui 
 | `os_version` | no | Image hint, e.g. `ubuntu-24.04` |
 | `arch` | yes | `x64`, `arm64` |
 | `vcpu` | yes | Integer, or `null` if not verified |
-| `memory_gb`, `disk_gb` | no | Numbers |
+| `memory_gb` | no | Memory (RAM) in GB, as published by the provider |
+| `disk_gb` | no | Disk (SSD/storage) the runner gets, in GB, as published by the provider. If the provider states something more nuanced (e.g. "14 GB free", "1.5 TB"), store the number in GB and explain in `notes` |
 | `gpu` | no | `{ model, count, memory_gb? }` |
 | `price_usd_per_minute` | yes | List price per runtime minute, before plan quotas, discounts and rounding |
 | `flat_fee` | with `billing.unit: "flat"` | `{ summary, amount_usd?, period?, notes? }`: `summary` is short display text (e.g. `$150/mo per concurrent job`); `amount_usd` is the fee per `period` (`month` or `year`) when one fixed amount applies. Required for, and only allowed on, flat-billed providers. |
@@ -75,6 +76,7 @@ site/                        # the web page: Vite + React + Tailwind, shadcn/ui 
 | `public_repo_free` | yes | `true` if jobs from public repositories are not billed |
 | `scheduling_discounts` | no | Price factors for optional modes, e.g. `{"flex": 0.6}` = 60% of list price |
 | `source_url` | yes | https URL that backs the price |
+| `specs_url` | no | https URL of the official spec page that backs `vcpu`, `memory_gb`, `disk_gb` and `gpu`, when that is a different page from `source_url` (e.g. GitHub's runner reference vs. its pricing reference). If omitted, `source_url` backs the specs too |
 | `verified_as_of` | yes | `YYYY-MM-DD` when the price was last checked against `source_url` |
 | `notes` | no | Free text |
 

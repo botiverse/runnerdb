@@ -104,7 +104,7 @@ function compute(i: Inputs) {
 
 // Header explanations for the results table (tooltip on hover, popover from the help icon).
 const HEADER_HELP: Record<string, string> = {
-  'vCPU / RAM': 'Virtual CPUs and memory in GB. With a vCPU filter, runners with at least that many vCPU are listed.',
+  'vCPU / RAM / Disk': 'Virtual CPUs, memory (RAM) in GB and disk (storage) in GB, as published by the provider; values that are not published are left out. With a vCPU filter, runners with at least that many vCPU are listed.',
   Rate: 'List price per runtime minute, or the flat fee per concurrent job for flat-fee plans. Free-tier minutes are subtracted only when that option is on.',
   'Monthly cost':
     'Per-minute runners: billable minutes × rate. Flat-fee plans: monthly fee × concurrent jobs, at least enough jobs to fit your minutes (43,200 min per job in 30 days). Before per-job rounding, quotas and negotiated discounts.',
@@ -243,6 +243,12 @@ function Specs({ r }: { r: Runner }) {
           {r.memoryGb} <span className="text-muted-foreground">GB</span>
         </>
       )}
+      {r.diskGb != null && (
+        <>
+          {' · '}
+          {r.diskGb} <span className="text-muted-foreground">GB disk</span>
+        </>
+      )}
     </span>
   )
 }
@@ -349,7 +355,7 @@ function Results({ rows, i }: { rows: Row[]; i: Inputs }) {
         <Table>
           <TableHeader className="bg-muted/40">
             <TableRow className="hover:bg-transparent">
-              {['#', 'Runner', 'vCPU / RAM', 'Rate', 'Monthly cost', 'Effective $/min', 'vs cheapest'].map((h, n) => (
+              {['#', 'Runner', 'vCPU / RAM / Disk', 'Rate', 'Monthly cost', 'Effective $/min', 'vs cheapest'].map((h, n) => (
                 <TableHead key={h} className={cn('h-11 px-2.5 text-xs font-medium tracking-wide text-muted-foreground uppercase first:pl-5 last:pr-5', n >= 4 && 'text-right')}>
                   {HEADER_HELP[h] ? (
                     <HeaderHelp help={HEADER_HELP[h]} label={h}>
