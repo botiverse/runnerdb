@@ -1,0 +1,18 @@
+{
+  "id": "32cpu-linux-arm64",
+  "labels": [
+    "runs-on=*/runner=32cpu-linux-arm64",
+    "runs-on=*/runner=32cpu-linux-arm64/*",
+    "runs-on=*,runner=32cpu-linux-arm64",
+    "runs-on=*,runner=32cpu-linux-arm64,*"
+  ],
+  "os": "linux",
+  "os_version": "ubuntu-24.04",
+  "arch": "arm64",
+  "vcpu": 32,
+  "price_usd_per_minute": 0,
+  "public_repo_free": true,
+  "source_url": "https://runs-on.com/docs/runners/platforms/linux/",
+  "verified_as_of": "2026-11-19",
+  "notes": "RunsOn Flex predefined runner \"32cpu-linux-arm64\" (EC2 families c8g, c9g, m8g, m9g; memory any; Spot by default, spot=false for on-demand). $0 is RunsOn's per-minute charge only: the EC2 instance, EBS and traffic are billed by AWS to your account at AWS prices (to the second); RunsOn adds a flat annual license. See the provider notes."
+}
