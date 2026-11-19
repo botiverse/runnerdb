@@ -6,10 +6,13 @@
   ],
   "os": "macos",
   "arch": "arm64",
-  "vcpu": null,
+  "vcpu": 5,
+  "memory_gb": 14,
+  "disk_gb": 14,
   "price_usd_per_minute": 0.102,
   "public_repo_free": false,
   "source_url": "https://docs.github.com/en/billing/reference/actions-runner-pricing",
+  "specs_url": "https://docs.github.com/en/actions/reference/runners/larger-runners",
   "verified_as_of": "2026-11-19",
-  "notes": "Larger runner (Apple M-series); billed on public repositories too. vCPU count not yet verified. Re-check against the GitHub pricing reference; GitHub has changed runner prices and specs before. Xcode image labels (xcode-NN) run on the same runners and bill the same."
+  "notes": "Larger runner (Apple M2). GitHub publishes the CPU as \"5 (+ 8 GPU hardware acceleration)\": vcpu is the 5 CPU cores; the 8 GPU cores are not a discrete GPU, so no gpu field. 14 GB RAM, 14 GB SSD. Billed on public repositories too. Xcode image labels (xcode-NN) run on the same runners and bill the same. Price: re-check against the GitHub pricing reference; GitHub has changed runner prices and specs before."
 }

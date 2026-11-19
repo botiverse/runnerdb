@@ -170,6 +170,7 @@ for (const pEnt of listDir(PROVIDERS_DIR)) {
     // Cross-field rules the schema can't express.
     if (`${runner.id}.json` !== rEnt.name) fail(rFile, `id "${runner.id}" must match file name (expected ${runner.id}.json)`);
     if (runner.verified_as_of > today) fail(rFile, `verified_as_of ${runner.verified_as_of} is in the future`);
+    if (runner.specs_url !== undefined && runner.specs_url === runner.source_url) fail(rFile, 'specs_url equals source_url; omit it (source_url then backs the specs too)');
     if (base !== undefined) {
       if (runner.multiplier === undefined) {
         fail(rFile, `provider uses multiplier billing (base_rate_usd=${base}); "multiplier" is required`);

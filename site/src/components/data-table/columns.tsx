@@ -23,6 +23,7 @@ const HELP = {
   arch: 'CPU architecture: x64 (Intel/AMD) or arm64.',
   vcpu: 'Number of virtual CPUs. – means the provider has not published a verified count.',
   memory: 'Memory (RAM) in GB, as published by the provider. – means not published.',
+  disk: 'Disk (storage) in GB, as published by the provider. – means not published.',
   multiplier: "Billing multiplier: billed minutes = runtime minutes × multiplier, at the provider's base rate.",
   flex: (
     <>
@@ -103,6 +104,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorFn: (r) => r.vcpu ?? undefined,
       meta: { title: 'vCPU' },
       sortingFn: 'basic',
+      sortUndefined: 'last',
       header: ({ column }) => <DataTableColumnHeader column={column} title="vCPU" help={HELP.vcpu} align="right" />,
       cell: ({ row }) => (
         <div className="text-right font-mono tabular-nums">{row.original.vcpu ?? <Dash />}</div>
@@ -113,10 +115,24 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorFn: (r) => r.memoryGb ?? undefined,
       meta: { title: 'Memory' },
       sortingFn: 'basic',
+      sortUndefined: 'last',
       header: ({ column }) => <DataTableColumnHeader column={column} title="RAM" help={HELP.memory} align="right" />,
       cell: ({ row }) => (
         <div className="text-right font-mono tabular-nums">
           {row.original.memoryGb == null ? <Dash /> : <>{row.original.memoryGb}<span className="text-muted-foreground"> GB</span></>}
+        </div>
+      ),
+    },
+    {
+      id: 'disk',
+      accessorFn: (r) => r.diskGb ?? undefined,
+      meta: { title: 'Disk' },
+      sortingFn: 'basic',
+      sortUndefined: 'last',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Disk" help={HELP.disk} align="right" />,
+      cell: ({ row }) => (
+        <div className="text-right font-mono tabular-nums whitespace-nowrap">
+          {row.original.diskGb == null ? <Dash /> : <>{row.original.diskGb}<span className="text-muted-foreground"> GB</span></>}
         </div>
       ),
     },
@@ -133,6 +149,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorFn: (r) => r.multiplier ?? undefined,
       meta: { title: 'Multiplier' },
       sortingFn: 'basic',
+      sortUndefined: 'last',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Mult." help={HELP.multiplier} align="right" />,
       cell: ({ row }) => (
         <div className="text-right font-mono tabular-nums">{row.original.multiplier == null ? <Dash /> : `${row.original.multiplier}×`}</div>
@@ -143,6 +160,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorFn: (r) => r.flex ?? undefined,
       meta: { title: 'Flex discount' },
       sortingFn: 'basic',
+      sortUndefined: 'last',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Flex" help={HELP.flex} align="right" />,
       cell: ({ row: { original: r } }) =>
         r.flex == null ? (

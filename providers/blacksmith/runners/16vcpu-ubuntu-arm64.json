@@ -6,6 +6,8 @@
   "os": "linux",
   "arch": "arm64",
   "vcpu": 16,
+  "memory_gb": 48,
+  "disk_gb": 750,
   "price_usd_per_minute": 0.02,
   "multiplier": 10,
   "public_repo_free": false,
@@ -13,5 +15,6 @@
     "flex": 0.6
   },
   "source_url": "https://www.blacksmith.sh/pricing",
+  "specs_url": "https://docs.blacksmith.sh/blacksmith-runners/overview",
   "verified_as_of": "2026-11-19"
 }

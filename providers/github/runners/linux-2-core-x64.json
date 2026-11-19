@@ -8,9 +8,12 @@
   "os": "linux",
   "arch": "x64",
   "vcpu": 2,
+  "memory_gb": 8,
+  "disk_gb": 14,
   "price_usd_per_minute": 0.006,
   "public_repo_free": true,
   "source_url": "https://docs.github.com/en/billing/reference/actions-runner-pricing",
+  "specs_url": "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
   "verified_as_of": "2026-11-19",
-  "notes": "Standard runner. Jobs in public repositories run on a larger (4 vCPU) machine for free. Re-check against the GitHub pricing reference; GitHub has changed runner prices and specs before."
+  "notes": "Standard runner. vCPU/RAM/disk are GitHub's published spec for private repositories (2 CPU, 8 GB RAM, 14 GB SSD); jobs in public repositories run on a larger machine (4 CPU, 16 GB RAM, 14 GB SSD) for free. Price: re-check against the GitHub pricing reference; GitHub has changed runner prices and specs before."
 }

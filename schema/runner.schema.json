@@ -20,8 +20,8 @@
     "os_version": { "type": "string", "description": "Optional OS image hint, e.g. ubuntu-24.04." },
     "arch": { "enum": ["x64", "arm64"] },
     "vcpu": { "type": ["integer", "null"], "minimum": 1, "description": "vCPU count; null if not verified." },
-    "memory_gb": { "type": "number", "exclusiveMinimum": 0 },
-    "disk_gb": { "type": "number", "exclusiveMinimum": 0 },
+    "memory_gb": { "type": "number", "exclusiveMinimum": 0, "description": "Memory (RAM) in GB, as published by the provider." },
+    "disk_gb": { "type": "number", "exclusiveMinimum": 0, "description": "Disk (SSD/storage) the runner gets in GB, as published by the provider. If the provider states something more nuanced (e.g. \"14 GB free\"), store the number and explain in notes." },
     "gpu": {
       "type": "object",
       "additionalProperties": false,
@@ -52,7 +52,8 @@
       "additionalProperties": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
       "description": "Price factors for optional scheduling modes, e.g. {\"flex\": 0.6} = 60% of list price."
     },
-    "source_url": { "type": "string", "format": "uri" },
+    "source_url": { "type": "string", "format": "uri", "description": "https URL that backs the price." },
+    "specs_url": { "type": "string", "format": "uri", "description": "https URL of the official spec page that backs vcpu, memory_gb, disk_gb and gpu, when that is not source_url. If omitted, source_url backs the specs too." },
     "verified_as_of": { "type": "string", "format": "date", "description": "YYYY-MM-DD when the price was last checked against source_url." },
     "notes": { "type": "string" }
   }

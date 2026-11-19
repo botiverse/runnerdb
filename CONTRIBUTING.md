@@ -5,7 +5,7 @@ Thanks for helping keep CI prices honest.
 ## Rules
 
 1. **One PR per price change** (or per new provider). Small PRs are easy to verify.
-2. **Every number needs a source.** Set `source_url` to a public page that shows the price, and set `verified_as_of` to the date you checked it (`YYYY-MM-DD`).
+2. **Every number needs a source.** Set `source_url` to a public page that shows the price, and set `verified_as_of` to the date you checked it (`YYYY-MM-DD`). If vCPU, memory or disk come from a different official page (a spec or runner-types page), set `specs_url` to it.
 3. **Don't guess.** If you can't verify a field, leave it out (optional fields) or use `null` (`vcpu`), and explain in `notes`. Use `billing.rounding: "unknown"` when you don't know how the provider rounds.
 4. **List prices only.** No plan quotas, startup credits or negotiated discounts in `price_usd_per_minute`; mention them in `notes` or `free_tier.notes`.
 5. Re-verifying an unchanged price is welcome: bump `verified_as_of` and keep the same `source_url`.
@@ -67,5 +67,6 @@ CI runs the same command. It validates against the schemas and also checks that:
 - `price_usd_per_minute == base_rate_usd × multiplier` for multiplier-billed providers
 - runners of `billing.unit: "flat"` providers have a `flat_fee` and `price_usd_per_minute` 0 (and `flat_fee` appears nowhere else)
 - `verified_as_of` is a real date and not in the future
+- `source_url` and `specs_url` are absolute https URLs, and `specs_url` (if set) differs from `source_url`
 
 By contributing you agree that data changes are released under CC0-1.0 and code changes under MIT.
