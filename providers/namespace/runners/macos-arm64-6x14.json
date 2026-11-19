@@ -1,0 +1,18 @@
+{
+  "id": "macos-arm64-6x14",
+  "labels": [
+    "nscloud-macos-*-arm64-6x14",
+    "nscloud-macos-*-arm64-6x14-with-*"
+  ],
+  "os": "macos",
+  "arch": "arm64",
+  "vcpu": 6,
+  "memory_gb": 14,
+  "disk_gb": 104,
+  "price_usd_per_minute": 0.09,
+  "multiplier": 60,
+  "public_repo_free": false,
+  "source_url": "https://namespace.so/pricing",
+  "verified_as_of": "2026-11-19",
+  "notes": "Machine label nscloud-macos-{sonoma,sequoia,tahoe,...}-arm64-6x14. Apple Silicon (M4 Pro and newer per the pricing page). Price is the overage rate; plan-included minutes cost $0.001/unit."
+}

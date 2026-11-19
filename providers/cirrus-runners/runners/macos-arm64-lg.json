@@ -1,0 +1,23 @@
+{
+  "id": "macos-arm64-lg",
+  "labels": [
+    "ghcr.io/cirruslabs/macos-runner:tahoe"
+  ],
+  "os": "macos",
+  "os_version": "macos-26",
+  "arch": "arm64",
+  "vcpu": 4,
+  "memory_gb": 16,
+  "disk_gb": 130,
+  "price_usd_per_minute": 0,
+  "flat_fee": {
+    "summary": "$150/mo per concurrent job",
+    "amount_usd": 150,
+    "period": "month",
+    "notes": "$150/month per concurrency unit; this resource class uses 1 unit(s)."
+  },
+  "public_repo_free": false,
+  "source_url": "https://cirrus-runners.app/pricing/",
+  "verified_as_of": "2026-11-19",
+  "notes": "Apple M4 Pro. Other ghcr.io/cirruslabs/macos-* image tags run on the same resource class. Specs: https://cirrus-runners.app/setup/"
+}

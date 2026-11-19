@@ -1,0 +1,16 @@
+{
+  "name": "Ubicloud",
+  "homepage": "https://www.ubicloud.com",
+  "pricing_url": "https://www.ubicloud.com/docs/about/pricing",
+  "billing": {
+    "unit": "minute",
+    "rounding": "unknown",
+    "notes": "Billed by the minute based on the runner type actually used (\"We calculate resource consumption at per minute granularity and bill monthly\"); how partial minutes are rounded is not stated. Premium runners are on by default and change what the standard x64 labels cost (see runner notes). Runner labels and specs: https://www.ubicloud.com/docs/github-actions-integration/runner-types"
+  },
+  "public_repo_policy": "billed",
+  "free_tier": {
+    "minutes_per_month": 1250,
+    "notes": "Every account gets a $2.50/month credit, equivalent to 1,250 minutes of the cheapest (2 vCPU standard) runner. Not applied in runnerdb prices."
+  },
+  "notes": "Runners run in Hetzner data centers in Germany. Linux only (no Windows or macOS). 60 vCPU labels exist in Ubicloud's label config but have no published price, so they are not listed."
+}

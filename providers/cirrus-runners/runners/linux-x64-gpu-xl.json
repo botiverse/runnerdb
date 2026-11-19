@@ -1,0 +1,27 @@
+{
+  "id": "linux-x64-gpu-xl",
+  "labels": [
+    "ghcr.io/cirruslabs/ubuntu-runner-amd64-gpu:24.04"
+  ],
+  "os": "linux",
+  "os_version": "ubuntu-24.04",
+  "arch": "x64",
+  "vcpu": 16,
+  "memory_gb": 48,
+  "disk_gb": 100,
+  "gpu": {
+    "model": "NVIDIA RTX 4000",
+    "count": 1
+  },
+  "price_usd_per_minute": 0,
+  "flat_fee": {
+    "summary": "$300/mo per concurrent job",
+    "amount_usd": 300,
+    "period": "month",
+    "notes": "$150/month per concurrency unit; this resource class uses 2 unit(s)."
+  },
+  "public_repo_free": false,
+  "source_url": "https://cirrus-runners.app/pricing/",
+  "verified_as_of": "2026-11-19",
+  "notes": "Specs: https://cirrus-runners.app/setup/"
+}

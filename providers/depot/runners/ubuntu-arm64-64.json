@@ -1,0 +1,18 @@
+{
+  "id": "ubuntu-arm64-64",
+  "labels": [
+    "depot-ubuntu-24.04-arm-64",
+    "depot-ubuntu-22.04-arm-64"
+  ],
+  "os": "linux",
+  "os_version": "ubuntu-24.04",
+  "arch": "arm64",
+  "vcpu": 64,
+  "memory_gb": 256,
+  "disk_gb": 250,
+  "price_usd_per_minute": 0.192,
+  "public_repo_free": false,
+  "source_url": "https://depot.dev/docs/github-actions/runner-types",
+  "verified_as_of": "2026-11-19",
+  "notes": "Graviton4 EC2 instance. Depot lists a 32x minutes multiplier for this size. Part of the memory is reserved for an in-memory disk accelerator."
+}

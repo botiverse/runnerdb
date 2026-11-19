@@ -1,0 +1,20 @@
+{
+  "id": "windows-x64-8x",
+  "labels": [
+    "warp-windows-latest-x64-8x",
+    "warp-windows-2022-x64-8x",
+    "warp-windows-2025-x64-8x",
+    "warp-windows-2025-vs2026-x64-8x"
+  ],
+  "os": "windows",
+  "os_version": "windows-2022",
+  "arch": "x64",
+  "vcpu": 8,
+  "memory_gb": 32,
+  "disk_gb": 256,
+  "price_usd_per_minute": 0.032,
+  "public_repo_free": false,
+  "source_url": "https://www.warpbuild.com/pricing",
+  "verified_as_of": "2026-11-19",
+  "notes": "warp-windows-latest-* currently points to Windows Server 2022. 2 vCPU Windows runners were removed on 2026-06-08."
+}

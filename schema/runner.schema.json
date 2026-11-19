@@ -33,6 +33,18 @@
       }
     },
     "price_usd_per_minute": { "type": "number", "minimum": 0, "description": "List price in USD per runtime minute, before scheduling discounts." },
+    "flat_fee": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary"],
+      "description": "For providers with billing.unit \"flat\": the runner is paid by a flat fee or license instead of per minute (price_usd_per_minute is then 0).",
+      "properties": {
+        "summary": { "type": "string", "minLength": 1, "description": "Short display text, e.g. \"$150/mo per concurrent job\"." },
+        "amount_usd": { "type": "number", "minimum": 0, "description": "Fee in USD per period, if one fixed amount applies to this runner." },
+        "period": { "enum": ["month", "year"], "description": "Billing period of amount_usd." },
+        "notes": { "type": "string" }
+      }
+    },
     "multiplier": { "type": "number", "exclusiveMinimum": 0, "description": "Billing-minute multiplier for multiplier-based providers." },
     "public_repo_free": { "type": "boolean", "description": "True if jobs from public repositories are not billed on this runner." },
     "scheduling_discounts": {

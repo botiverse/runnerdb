@@ -1,0 +1,20 @@
+{
+  "id": "standard-4-x64",
+  "labels": [
+    "ubicloud-standard-4",
+    "ubicloud-standard-4-ubuntu-2604",
+    "ubicloud-standard-4-ubuntu-2404",
+    "ubicloud-standard-4-ubuntu-2204"
+  ],
+  "os": "linux",
+  "os_version": "ubuntu-24.04",
+  "arch": "x64",
+  "vcpu": 4,
+  "memory_gb": 16,
+  "disk_gb": 150,
+  "price_usd_per_minute": 0.0025,
+  "public_repo_free": false,
+  "source_url": "https://www.ubicloud.com/docs/about/pricing",
+  "verified_as_of": "2026-11-19",
+  "notes": "Standard x64 runner (AMD EPYC 9454P; 2 vCPU = 1 physical core). Premium runners are enabled by default at the account level: with that setting on, jobs using these standard labels are routed to premium machines and billed at the premium rate ($0.004/min, see premium-4-x64), falling back to standard (and the standard rate) when premium capacity is full. Turn premium off in the console to always pay this price."
+}

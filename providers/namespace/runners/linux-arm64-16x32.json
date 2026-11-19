@@ -1,0 +1,18 @@
+{
+  "id": "linux-arm64-16x32",
+  "labels": [
+    "nscloud-ubuntu-*-arm64-16x32",
+    "nscloud-ubuntu-*-arm64-16x32-with-*"
+  ],
+  "os": "linux",
+  "arch": "arm64",
+  "vcpu": 16,
+  "memory_gb": 32,
+  "disk_gb": 160,
+  "price_usd_per_minute": 0.024,
+  "multiplier": 16,
+  "public_repo_free": false,
+  "source_url": "https://namespace.so/pricing",
+  "verified_as_of": "2026-11-19",
+  "notes": "Machine label nscloud-ubuntu-{20.04,22.04,24.04,26.04}-arm64-16x32; -with-* suffixes (cache, features, builders) do not change the shape or price. AmpereOne hardware. Price is Namespace's pay-as-you-go (overage) rate; plan-included minutes cost $0.001/unit."
+}

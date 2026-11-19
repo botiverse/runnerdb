@@ -116,8 +116,19 @@ export function PublicFree({ free }: { free: boolean }) {
   )
 }
 
-export function Price({ value, unit, align = 'right' }: { value: number; unit: Unit; align?: 'right' | 'left' }) {
+export function Price({ value, unit, flatFee = null, align = 'right' }: { value: number; unit: Unit; flatFee?: string | null; align?: 'right' | 'left' }) {
   const other: Unit = unit === 'min' ? 'h' : 'min'
+  if (flatFee) {
+    // Flat fee / license (billing.unit "flat"): not a per-minute price, so no bar and no "Free".
+    return (
+      <div className={cn('flex flex-col gap-1', align === 'right' ? 'items-end' : 'items-start')} title="Flat fee or license, not billed per minute">
+        <div className="leading-none">
+          <span className="text-[13px] font-semibold tracking-tight text-foreground">Flat fee</span>
+        </div>
+        <span className="text-[11px] text-muted-foreground">{flatFee}</span>
+      </div>
+    )
+  }
   // sqrt scale so cheap runners still get a visible bar
   const pct = value === 0 ? 0 : Math.max(4, Math.sqrt(value / maxPrice) * 100)
   return (

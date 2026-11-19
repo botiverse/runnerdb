@@ -1,0 +1,23 @@
+{
+  "id": "linux-x64-sm",
+  "labels": [
+    "ghcr.io/cirruslabs/ubuntu-runner-amd64:24.04-sm"
+  ],
+  "os": "linux",
+  "os_version": "ubuntu-24.04",
+  "arch": "x64",
+  "vcpu": 4,
+  "memory_gb": 12,
+  "disk_gb": 50,
+  "price_usd_per_minute": 0,
+  "flat_fee": {
+    "summary": "$37.50/mo per concurrent job",
+    "amount_usd": 37.5,
+    "period": "month",
+    "notes": "$150/month per concurrency unit; this resource class uses 0.25 unit(s)."
+  },
+  "public_repo_free": false,
+  "source_url": "https://cirrus-runners.app/pricing/",
+  "verified_as_of": "2026-11-19",
+  "notes": "KVM available. Specs: https://cirrus-runners.app/setup/"
+}

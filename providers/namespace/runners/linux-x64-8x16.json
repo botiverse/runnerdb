@@ -1,0 +1,18 @@
+{
+  "id": "linux-x64-8x16",
+  "labels": [
+    "nscloud-ubuntu-*-amd64-8x16",
+    "nscloud-ubuntu-*-amd64-8x16-with-*"
+  ],
+  "os": "linux",
+  "arch": "x64",
+  "vcpu": 8,
+  "memory_gb": 16,
+  "disk_gb": 96,
+  "price_usd_per_minute": 0.012,
+  "multiplier": 8,
+  "public_repo_free": false,
+  "source_url": "https://namespace.so/pricing",
+  "verified_as_of": "2026-11-19",
+  "notes": "Machine label nscloud-ubuntu-{20.04,22.04,24.04,26.04}-amd64-8x16; -with-* suffixes (cache, features, builders) do not change the shape or price. AMD EPYC hardware. Price is Namespace's pay-as-you-go (overage) rate; plan-included minutes cost $0.001/unit."
+}

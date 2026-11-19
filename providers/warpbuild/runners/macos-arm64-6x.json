@@ -1,0 +1,20 @@
+{
+  "id": "macos-arm64-6x",
+  "labels": [
+    "warp-macos-latest-arm64-6x",
+    "warp-macos-26-arm64-6x",
+    "warp-macos-15-arm64-6x",
+    "warp-macos-14-arm64-6x"
+  ],
+  "os": "macos",
+  "os_version": "macos-15",
+  "arch": "arm64",
+  "vcpu": 6,
+  "memory_gb": 14,
+  "disk_gb": 120,
+  "price_usd_per_minute": 0.08,
+  "public_repo_free": false,
+  "source_url": "https://www.warpbuild.com/pricing",
+  "verified_as_of": "2026-11-19",
+  "notes": "Apple M4 Pro / M5 Pro. warp-macos-latest-* currently points to macOS 15."
+}

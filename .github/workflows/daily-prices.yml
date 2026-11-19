@@ -1,0 +1,108 @@
+name: daily-prices
+
+# Re-checks every provider's official pricing source once a day (scripts/fetch-prices.mjs) and opens or
+# updates a pull request on bot/daily-prices.
+#
+# - Price changed: PR "Update runner prices (N changed)" on the same day.
+# - Only verified_as_of bumps: committed weekly (Mondays) or on a manual run, as
+#   "Re-verify prices (no changes)", to avoid a 100-file date-only PR every day. If a bot PR is already
+#   open, it is refreshed every day so it always matches the latest check.
+# - Nothing differs from the default branch: an open bot PR is closed.
+# - A fetcher fails (runner/price not found, usually a page redesign): the job fails at the end, so
+#   GitHub notifies. Providers that did check out are still included in the PR.
+#
+# Needs the repository setting "Allow GitHub Actions to create and approve pull requests"
+# (Settings > Actions > General > Workflow permissions).
+
+on:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: daily-prices
+  cancel-in-progress: false
+
+jobs:
+  prices:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write # push bot/daily-prices
+      pull-requests: write # open/update/close the PR
+    env:
+      BRANCH: bot/daily-prices
+      BASE: ${{ github.event.repository.default_branch }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+
+      - name: Fetch prices
+        id: fetch
+        continue-on-error: true # report and open the PR for the providers that worked, fail at the end
+        run: node scripts/fetch-prices.mjs --summary "$RUNNER_TEMP/price-summary.md"
+
+      - name: Job summary
+        if: always()
+        run: cat "$RUNNER_TEMP/price-summary.md" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || echo "no summary written" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Validate data
+        run: node build.mjs --check
+
+      - name: Decide what to commit
+        id: decide
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PRICE_CHANGES: ${{ steps.fetch.outputs.price_changes }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          open_pr=$(gh pr list --head "$BRANCH" --base "$BASE" --state open --json number --jq '.[0].number // empty')
+          if git diff --quiet -- providers; then
+            mode=none
+          elif [ "${PRICE_CHANGES:-0}" -gt 0 ]; then
+            mode=prices
+          elif [ "$EVENT" = workflow_dispatch ] || [ "$(date -u +%u)" = 1 ] || [ -n "$open_pr" ]; then
+            mode=reverify
+          else
+            mode=skip
+          fi
+          echo "mode=$mode open_pr=${open_pr:-none}"
+          { echo "mode=$mode"; echo "open_pr=$open_pr"; } >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the pull request
+        if: steps.decide.outputs.mode == 'prices' || steps.decide.outputs.mode == 'reverify'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MODE: ${{ steps.decide.outputs.mode }}
+          OPEN_PR: ${{ steps.decide.outputs.open_pr }}
+          PRICE_CHANGES: ${{ steps.fetch.outputs.price_changes }}
+        run: |
+          if [ "$MODE" = prices ]; then title="Update runner prices ($PRICE_CHANGES changed)"; else title="Re-verify prices (no changes)"; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$BRANCH"
+          git add providers
+          git commit -q -m "$title" -m "Automated by .github/workflows/daily-prices.yml (scripts/fetch-prices.mjs)."
+          git push --force origin "$BRANCH"
+          if [ -n "$OPEN_PR" ]; then
+            gh pr edit "$OPEN_PR" --title "$title" --body-file "$RUNNER_TEMP/price-summary.md"
+          else
+            gh pr create --base "$BASE" --head "$BRANCH" --title "$title" --body-file "$RUNNER_TEMP/price-summary.md"
+          fi
+
+      - name: Close a stale pull request
+        if: steps.decide.outputs.mode == 'none' && steps.decide.outputs.open_pr != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OPEN_PR: ${{ steps.decide.outputs.open_pr }}
+        run: gh pr close "$OPEN_PR" --delete-branch --comment "The latest price check matches $BASE; nothing to update."
+
+      - name: Fail if a fetcher failed
+        if: steps.fetch.outcome == 'failure'
+        run: |
+          echo "::error::scripts/fetch-prices.mjs failed; see the Errors section of the job summary"
+          exit 1

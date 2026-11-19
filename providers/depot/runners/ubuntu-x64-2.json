@@ -1,0 +1,19 @@
+{
+  "id": "ubuntu-x64-2",
+  "labels": [
+    "depot-ubuntu-latest",
+    "depot-ubuntu-24.04",
+    "depot-ubuntu-22.04"
+  ],
+  "os": "linux",
+  "os_version": "ubuntu-24.04",
+  "arch": "x64",
+  "vcpu": 2,
+  "memory_gb": 8,
+  "disk_gb": 100,
+  "price_usd_per_minute": 0.006,
+  "public_repo_free": false,
+  "source_url": "https://depot.dev/docs/github-actions/runner-types",
+  "verified_as_of": "2026-11-19",
+  "notes": "AMD EC2 instance. Depot lists a 1x minutes multiplier for this size. Part of the memory is reserved for an in-memory disk accelerator."
+}

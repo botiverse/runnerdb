@@ -1,0 +1,23 @@
+{
+  "id": "linux-arm64-md",
+  "labels": [
+    "ghcr.io/cirruslabs/ubuntu-runner-arm64:24.04-md"
+  ],
+  "os": "linux",
+  "os_version": "ubuntu-24.04",
+  "arch": "arm64",
+  "vcpu": 4,
+  "memory_gb": 12,
+  "disk_gb": 50,
+  "price_usd_per_minute": 0,
+  "flat_fee": {
+    "summary": "$75/mo per concurrent job",
+    "amount_usd": 75,
+    "period": "month",
+    "notes": "$150/month per concurrency unit; this resource class uses 0.5 unit(s)."
+  },
+  "public_repo_free": false,
+  "source_url": "https://cirrus-runners.app/pricing/",
+  "verified_as_of": "2026-11-19",
+  "notes": "Apple Silicon hosts. Specs: https://cirrus-runners.app/setup/"
+}
