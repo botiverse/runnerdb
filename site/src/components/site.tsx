@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { toast } from 'sonner'
-import { ArrowRightIcon, CheckIcon, CopyIcon, MonitorIcon, MoonIcon, PlusIcon, StarIcon, SunIcon } from 'lucide-react'
+import { MonitorIcon, MoonIcon, PlusIcon, StarIcon, SunIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -11,8 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useTheme, type Theme } from '@/components/theme-provider'
 import { GitHubIcon, Logo } from '@/components/icons'
-import { copyText } from '@/components/runner-bits'
-import { asOf, cheapestPaid, formatDate, formatPrice, labelCount, providers, runners } from '@/lib/data'
+import { asOf, formatDate, labelCount, providers, runners } from '@/lib/data'
 
 export const REPO = 'https://github.com/botiverse/runnerdb'
 const CONTRIBUTE = `${REPO}/blob/main/CONTRIBUTING.md`
@@ -46,8 +44,7 @@ export function SiteHeader() {
           <span className="font-mono text-[15px] font-semibold tracking-tight">runnerdb</span>
         </a>
         <nav className="hidden items-center gap-1 text-sm text-muted-foreground md:flex" aria-label="Main">
-          <a href="#runners" className="rounded-md px-2.5 py-1.5 transition-colors hover:text-foreground">Runners</a>
-          <a href="./api.json" className="rounded-md px-2.5 py-1.5 font-mono text-[13px] transition-colors hover:text-foreground">api.json</a>
+                    <a href="./api.json" className="rounded-md px-2.5 py-1.5 font-mono text-[13px] transition-colors hover:text-foreground">api.json</a>
           <a href="./schema.json" className="rounded-md px-2.5 py-1.5 font-mono text-[13px] transition-colors hover:text-foreground">schema.json</a>
           <a href={`${REPO}#readme`} className="rounded-md px-2.5 py-1.5 transition-colors hover:text-foreground">Docs</a>
         </nav>
@@ -79,99 +76,31 @@ export function SiteHeader() {
   )
 }
 
-function CurlBox() {
-  const cmd = 'curl -s https://runnerdb.stamp.build/api.json'
-  const [copied, setCopied] = React.useState(false)
+export function SummaryLine() {
+  const items: [React.ReactNode, string][] = [
+    [providers.length, 'providers'],
+    [runners.length, 'runners'],
+    [labelCount, 'labels'],
+  ]
   return (
-    <div className="flex h-10 w-full max-w-md items-center gap-2 rounded-lg border bg-card/80 pr-1 pl-3 font-mono text-[13px] shadow-xs backdrop-blur">
-      <span className="text-brand-fg select-none">$</span>
-      <span className="truncate text-foreground/90">{cmd}</span>
-      <Button
-        variant="ghost"
-        size="icon-sm"
-        className="ml-auto size-8"
-        aria-label="Copy command"
-        onClick={() =>
-          copyText(cmd).then(() => {
-            setCopied(true)
-            toast.success('Command copied')
-            setTimeout(() => setCopied(false), 1500)
-          })
-        }
-      >
-        {copied ? <CheckIcon /> : <CopyIcon />}
-      </Button>
+    <div className="flex flex-col gap-2 text-sm text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+      <p>
+        <span className="font-medium text-foreground">CI runner prices, specs and billing rules</span>
+        <span className="hidden sm:inline"> · open data, every price linked to its source</span>
+      </p>
+      <ul className="flex flex-wrap items-center gap-1.5 text-xs">
+        {items.map(([n, label]) => (
+          <li key={label} className="inline-flex items-center gap-1 rounded-md border bg-card px-2 py-0.5">
+            <span className="font-mono font-medium text-foreground tabular-nums">{n}</span>
+            {label}
+          </li>
+        ))}
+        <li className="inline-flex items-center gap-1.5 rounded-md border bg-card px-2 py-0.5">
+          <span className="size-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+          data as of <span className="font-medium text-foreground">{formatDate(asOf)}</span>
+        </li>
+      </ul>
     </div>
-  )
-}
-
-function Stat({ label, value, hint }: { label: string; value: React.ReactNode; hint: string }) {
-  return (
-    <div className="rounded-xl border bg-card/80 p-4 shadow-xs backdrop-blur sm:p-5">
-      <div className="text-xs font-medium tracking-wide text-muted-foreground uppercase">{label}</div>
-      <div className="mt-2 font-mono text-2xl font-semibold tracking-tight tabular-nums sm:text-[28px]">{value}</div>
-      <div className="mt-1 text-xs text-muted-foreground">{hint}</div>
-    </div>
-  )
-}
-
-export function Hero() {
-  return (
-    <section className="relative isolate overflow-hidden border-b">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_40%,transparent_100%)]"
-      />
-      <div aria-hidden="true" className="absolute -top-40 left-1/2 -z-10 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-brand/20 blur-3xl dark:bg-brand/15" />
-      <div className="mx-auto max-w-7xl px-4 pt-14 pb-12 sm:px-6 sm:pt-20 lg:px-8">
-        <a
-          href={`${REPO}/commits/main`}
-          className="inline-flex items-center gap-2 rounded-full border bg-card/80 py-1 pr-3 pl-1 text-xs text-muted-foreground shadow-xs backdrop-blur transition-colors hover:text-foreground"
-        >
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-soft px-2 py-0.5 font-medium text-brand-fg">
-            <span className="relative flex size-1.5">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand opacity-60 motion-reduce:animate-none" />
-              <span className="relative inline-flex size-1.5 rounded-full bg-brand" />
-            </span>
-            Updated
-          </span>
-          Data as of {formatDate(asOf)}
-          <ArrowRightIcon className="size-3" />
-        </a>
-        <h1 className="mt-6 max-w-3xl text-4xl font-semibold tracking-tighter text-balance sm:text-5xl lg:text-6xl">
-          What does your CI runner{' '}
-          <span className="bg-gradient-to-r from-brand to-fuchsia-500 bg-clip-text text-transparent dark:to-fuchsia-400">really cost?</span>
-        </h1>
-        <p className="mt-5 max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg">
-          An open dataset of CI runner prices, specs and billing rules. Every <code className="rounded bg-muted px-1 py-0.5 font-mono text-[0.9em] text-foreground">runs-on</code> label, its
-          price per minute and hardware, with a source link for every number.
-        </p>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button asChild size="lg" className="h-10">
-            <a href="#runners">
-              Browse runners
-              <ArrowRightIcon />
-            </a>
-          </Button>
-          <CurlBox />
-        </div>
-        <div className="mt-12 grid grid-cols-2 gap-3 lg:grid-cols-4">
-          <Stat label="Providers" value={providers.length} hint="Hosted and self-hosted" />
-          <Stat label="Runner types" value={runners.length} hint="Linux, Windows, macOS" />
-          <Stat label="runs-on labels" value={labelCount} hint="Exact and wildcard" />
-          <Stat
-            label="From"
-            value={
-              <>
-                {formatPrice(cheapestPaid.price, 'min')}
-                <span className="text-base font-normal text-muted-foreground">/min</span>
-              </>
-            }
-            hint={`${cheapestPaid.providerShort} ${cheapestPaid.id}`}
-          />
-        </div>
-      </div>
-    </section>
   )
 }
 

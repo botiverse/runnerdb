@@ -91,7 +91,6 @@ export const runners: Runner[] = Object.values(data.providers).flatMap((p) =>
 export const OS_LABEL: Record<Runner['os'], string> = { linux: 'Linux', windows: 'Windows', macos: 'macOS' }
 
 export const labelCount = runners.reduce((n, r) => n + r.labels.length, 0)
-export const cheapestPaid = runners.filter((r) => r.price > 0).sort((a, b) => a.price - b.price)[0]
 export const maxPrice = Math.max(...runners.map((r) => r.price))
 
 export type Unit = 'min' | 'h'
