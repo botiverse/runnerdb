@@ -115,7 +115,10 @@ export function SiteFooter() {
           </div>
           <p className="text-xs leading-relaxed">
             Data is <a className="underline underline-offset-4 hover:text-foreground" href={`${REPO}/blob/main/DATA_LICENSE`}>CC0-1.0</a> (public domain); code is{' '}
-            <a className="underline underline-offset-4 hover:text-foreground" href={`${REPO}/blob/main/LICENSE`}>MIT</a>. Provider names are trademarks of their owners; runnerdb is not affiliated with any provider.
+            <a className="underline underline-offset-4 hover:text-foreground" href={`${REPO}/blob/main/LICENSE`}>MIT</a>.
+          </p>
+          <p className="text-xs leading-relaxed">
+            GitHub, Blacksmith and other provider names and logos are trademarks of their respective owners. runnerdb is not affiliated with or endorsed by them; logos are used only to identify each provider.
           </p>
         </div>
         <div className="flex flex-col gap-3 md:items-end">

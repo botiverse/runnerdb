@@ -1,14 +1,20 @@
 import { toast } from 'sonner'
-import { CheckIcon } from 'lucide-react'
+import type { ReactNode } from 'react'
+import { CheckIcon, ServerIcon } from 'lucide-react'
+import { BlacksmithIcon, GitHubIcon } from '@/components/icons'
 import { cn } from '@/lib/utils'
 import { OS_LABEL, formatPrice, maxPrice, type Runner, type Unit } from '@/lib/data'
 
-// Colored initials, not provider logos (logos are their owners' trademarks).
-const PROVIDER_STYLE: Record<string, { initials: string; className: string }> = {
-  github: { initials: 'GH', className: 'bg-gradient-to-br from-neutral-700 to-neutral-950 text-white ring-neutral-950/10 dark:from-neutral-100 dark:to-neutral-300 dark:text-neutral-900' },
-  blacksmith: { initials: 'BS', className: 'bg-gradient-to-br from-amber-400 to-orange-600 text-white ring-orange-700/20' },
-  'self-hosted': { initials: 'SH', className: 'bg-gradient-to-br from-emerald-400 to-teal-600 text-white ring-teal-700/20' },
+// Official marks for known providers (see NOTICE); a neutral icon for self-hosted;
+// colored initials for anything else.
+const AVATAR_BASE = 'inline-flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg shadow-sm ring-1 ring-inset'
+
+const PROVIDER_ICON: Record<string, { className: string; icon: ReactNode }> = {
+  github: { className: 'bg-white text-[#181717] ring-black/10 dark:bg-neutral-950 dark:text-white dark:ring-white/15', icon: <GitHubIcon className="size-[62%]" /> },
+  blacksmith: { className: 'bg-[#F0FB29] ring-black/10 dark:ring-white/10', icon: <BlacksmithIcon className="size-full" /> },
+  'self-hosted': { className: 'bg-muted text-muted-foreground ring-border', icon: <ServerIcon className="size-[55%]" strokeWidth={2} /> },
 }
+
 const FALLBACK = [
   'bg-gradient-to-br from-sky-400 to-blue-600 text-white',
   'bg-gradient-to-br from-fuchsia-400 to-purple-600 text-white',
@@ -16,20 +22,25 @@ const FALLBACK = [
   'bg-gradient-to-br from-lime-400 to-green-600 text-white',
 ]
 
-export function providerStyle(id: string, name: string) {
-  if (PROVIDER_STYLE[id]) return PROVIDER_STYLE[id]
+function fallbackStyle(id: string, name: string) {
   const h = [...id].reduce((a, c) => a + c.charCodeAt(0), 0)
   const words = name.split(/[\s-]+/).filter(Boolean)
-  return { initials: (words[0][0] + (words[1]?.[0] ?? words[0][1] ?? '')).toUpperCase(), className: FALLBACK[h % FALLBACK.length] }
+  const initials = words.length ? words[0][0] + (words[1]?.[0] ?? words[0][1] ?? '') : id.slice(0, 2)
+  return { initials: initials.toUpperCase(), className: FALLBACK[h % FALLBACK.length] }
 }
 
 export function ProviderAvatar({ id, name, className }: { id: string; name: string; className?: string }) {
-  const s = providerStyle(id, name)
+  const known = PROVIDER_ICON[id]
+  if (known) {
+    return (
+      <span aria-hidden="true" className={cn(AVATAR_BASE, known.className, className)}>
+        {known.icon}
+      </span>
+    )
+  }
+  const s = fallbackStyle(id, name)
   return (
-    <span
-      aria-hidden="true"
-      className={cn('inline-flex size-8 shrink-0 items-center justify-center rounded-lg text-[11px] font-semibold tracking-tight shadow-sm ring-1 ring-inset', s.className, className)}
-    >
+    <span aria-hidden="true" className={cn(AVATAR_BASE, 'text-[11px] font-semibold tracking-tight ring-black/10', s.className, className)}>
       {s.initials}
     </span>
   )

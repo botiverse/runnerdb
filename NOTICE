@@ -1,0 +1,28 @@
+runnerdb
+https://github.com/botiverse/runnerdb
+
+Licenses
+--------
+- Code (build.mjs, site/, the generated page, workflows): MIT, see LICENSE.
+  site/src/components/ui/ is adapted from shadcn/ui (MIT).
+- Data (providers/, schema/, generated api.json and schema.json): CC0-1.0,
+  see DATA_LICENSE.
+
+Third-party trademarks and logos
+--------------------------------
+The provider names and logos below are trademarks of their respective owners.
+They are NOT covered by the MIT license or by CC0 and remain the property of
+their owners. runnerdb is not affiliated with or endorsed by any provider; the
+names and logos are used only for nominative identification of each provider.
+Reusing runnerdb's code or data does not grant any right to use these marks.
+
+- GitHub name and GitHub mark (Invertocat): GitHub, Inc.
+  Mark source: Octicons "mark-github", https://github.com/primer/octicons
+  Usage guidelines: https://github.com/logos
+
+- Blacksmith name and logo: Blacksmith
+  Logo source: https://www.blacksmith.sh/icon.svg (official favicon, used unmodified)
+  Terms: https://docs.blacksmith.sh/about/terms-of-service
+
+The self-hosted icon is "server" from Lucide (https://lucide.dev, ISC license)
+and is not a trademark.
