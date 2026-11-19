@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flat-fee &amp; license CI runner plans · runnerdb</title>
+    <meta name="description" content="CI runner providers billed by a monthly fee or license instead of per minute: runners, runs-on labels, specs and fees, each linked to its source." />
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <link rel="canonical" href="https://runnerdb.stamp.build/flat-fee/" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="runnerdb" />
+    <meta property="og:title" content="Flat-fee &amp; license CI runner plans · runnerdb" />
+    <meta property="og:description" content="CI runner providers billed by a monthly fee or license instead of per minute. Open data (CC0)." />
+    <meta property="og:url" content="https://runnerdb.stamp.build/flat-fee/" />
+    <meta name="twitter:card" content="summary" />
+    <script>
+      try {
+        var t = localStorage.getItem('runnerdb-theme') || 'system'
+        var dark = t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.classList.toggle('dark', dark)
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p style="font-family: system-ui, sans-serif; max-width: 40rem; margin: 3rem auto; padding: 0 1rem; line-height: 1.6">
+        <strong>runnerdb</strong> needs JavaScript for this page.
+        The full dataset is available as <a href="../api.json">api.json</a>
+        (schema: <a href="../schema.json">schema.json</a>), and the source is on
+        <a href="https://github.com/botiverse/runnerdb">GitHub</a>.
+      </p>
+    </noscript>
+    <script type="module" src="/src/flat-fee.tsx"></script>
+  </body>
+</html>

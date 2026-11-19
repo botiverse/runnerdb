@@ -1,18 +1,24 @@
 import { toast } from 'sonner'
 import type { ReactNode } from 'react'
-import { CheckIcon, ServerIcon } from 'lucide-react'
-import { BlacksmithIcon, GitHubIcon } from '@/components/icons'
+import { CheckIcon } from 'lucide-react'
+import { BlacksmithIcon, CirrusIcon, DepotIcon, GitHubIcon, LinuxIcon, AppleIcon, WindowsIcon, NamespaceIcon, runsOnIconUrl, ubicloudIconUrl } from '@/components/icons'
 import { cn } from '@/lib/utils'
 import { OS_LABEL, formatPrice, maxPrice, type Runner, type Unit } from '@/lib/data'
 
-// Official marks for known providers (see NOTICE); a neutral icon for self-hosted;
-// colored initials for anything else.
+// Official marks for known providers (see NOTICE); colored initials for anything else.
 const AVATAR_BASE = 'inline-flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg shadow-sm ring-1 ring-inset'
 
+// White tile in light theme, near-black in dark (as for GitHub) for marks that have light/dark variants.
+const NEUTRAL = 'bg-white ring-black/10 dark:bg-neutral-950 dark:ring-white/15'
+
 const PROVIDER_ICON: Record<string, { className: string; icon: ReactNode }> = {
-  github: { className: 'bg-white text-[#181717] ring-black/10 dark:bg-neutral-950 dark:text-white dark:ring-white/15', icon: <GitHubIcon className="size-[62%]" /> },
+  github: { className: cn(NEUTRAL, 'text-[#181717] dark:text-white'), icon: <GitHubIcon className="size-[62%]" /> },
   blacksmith: { className: 'bg-[#F0FB29] ring-black/10 dark:ring-white/10', icon: <BlacksmithIcon className="size-full" /> },
-  'self-hosted': { className: 'bg-muted text-muted-foreground ring-border', icon: <ServerIcon className="size-[55%]" strokeWidth={2} /> },
+  depot: { className: NEUTRAL, icon: <DepotIcon className="size-[58%]" /> },
+  namespace: { className: NEUTRAL, icon: <NamespaceIcon className="size-[78%]" /> },
+  ubicloud: { className: 'bg-[#FF5C12] ring-black/10 dark:ring-white/10', icon: <img src={ubicloudIconUrl} alt="" className="size-full" /> },
+  'runs-on': { className: 'bg-[#101010] ring-black/10 dark:ring-white/15', icon: <img src={runsOnIconUrl} alt="" className="size-full" /> },
+  'cirrus-runners': { className: cn(NEUTRAL, 'text-[#181717] dark:text-white'), icon: <CirrusIcon className="size-[62%]" /> },
 }
 
 const FALLBACK = [
@@ -69,29 +75,35 @@ export function copyLabel(label: string) {
   )
 }
 
-export function LabelChip({ label }: { label: string }) {
+export function LabelChip({ label, className }: { label: string; className?: string }) {
   return (
     <button
       type="button"
       onClick={() => copyLabel(label)}
       title={`Copy ${label}`}
-      className="inline-flex h-6 cursor-copy items-center whitespace-nowrap rounded-md border bg-muted/60 px-2 font-mono text-[11.5px] text-foreground/90 transition-colors hover:border-brand/50 hover:bg-brand-soft hover:text-brand-fg focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+      className={cn(
+        'inline-flex h-6 cursor-copy items-center whitespace-nowrap rounded-md border bg-muted/60 px-2 font-mono text-[11.5px] text-foreground/90 transition-colors hover:border-brand/50 hover:bg-brand-soft hover:text-brand-fg focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
+        className,
+      )}
     >
       {label}
     </button>
   )
 }
 
-const OS_DOT: Record<Runner['os'], string> = {
-  linux: 'bg-amber-500',
-  windows: 'bg-sky-500',
-  macos: 'bg-neutral-400 dark:bg-neutral-300',
+// OS glyphs, monochrome in currentColor. Linux: Tux (Simple Icons). Apple's and Microsoft's trademark
+// macOS and Windows use Font Awesome's brand icons (CC BY 4.0); the marks belong to Apple and Microsoft. See NOTICE.
+export function OsIcon({ os, className }: { os: Runner['os']; className?: string }) {
+  const c = cn('size-3.5 shrink-0', className)
+  if (os === 'linux') return <LinuxIcon className={c} />
+  if (os === 'macos') return <AppleIcon className={c} />
+  return <WindowsIcon className={c} />
 }
 
 export function OsBadge({ os }: { os: Runner['os'] }) {
   return (
     <span className="inline-flex items-center gap-1.5 text-sm">
-      <span className={cn('size-1.5 rounded-full', OS_DOT[os])} aria-hidden="true" />
+      <OsIcon os={os} className="text-muted-foreground" />
       {OS_LABEL[os]}
     </span>
   )
@@ -116,19 +128,8 @@ export function PublicFree({ free }: { free: boolean }) {
   )
 }
 
-export function Price({ value, unit, flatFee = null, align = 'right' }: { value: number; unit: Unit; flatFee?: string | null; align?: 'right' | 'left' }) {
+export function Price({ value, unit, align = 'right' }: { value: number; unit: Unit; align?: 'right' | 'left' }) {
   const other: Unit = unit === 'min' ? 'h' : 'min'
-  if (flatFee) {
-    // Flat fee / license (billing.unit "flat"): not a per-minute price, so no bar and no "Free".
-    return (
-      <div className={cn('flex flex-col gap-1', align === 'right' ? 'items-end' : 'items-start')} title="Flat fee or license, not billed per minute">
-        <div className="leading-none">
-          <span className="text-[13px] font-semibold tracking-tight text-foreground">Flat fee</span>
-        </div>
-        <span className="text-[11px] text-muted-foreground">{flatFee}</span>
-      </div>
-    )
-  }
   // sqrt scale so cheap runners still get a visible bar
   const pct = value === 0 ? 0 : Math.max(4, Math.sqrt(value / maxPrice) * 100)
   return (

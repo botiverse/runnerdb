@@ -5,6 +5,7 @@ An open, static dataset of **CI runner prices, specs and billing rules**: what a
 - Browse: <https://runnerdb.stamp.build>
 - API: <https://runnerdb.stamp.build/api.json>
 - Schema: <https://runnerdb.stamp.build/schema.json>
+- Cost calculator: <https://runnerdb.stamp.build/calculator/> (monthly cost of every runner, per-minute and flat-fee, for your minutes and concurrency; runs in the browser)
 
 Every price has a `source_url` and a `verified_as_of` date, so you can see where a number came from and when someone last checked it.
 
@@ -20,9 +21,8 @@ Every price has a `source_url` and a `verified_as_of` date, so you can see where
 | WarpBuild | `providers/warpbuild` | Linux x64/ARM 2-32 vCPU, ARM on Apple Silicon, Windows 4-32 vCPU, macOS 6/12 vCPU |
 | RunsOn | `providers/runs-on` | Flex predefined Linux runners. $0 per minute: you pay AWS directly plus a flat annual license |
 | Cirrus Runners | `providers/cirrus-runners` | macOS, Linux x64/ARM, Linux GPU. $0 per minute: flat $150/month per concurrency unit |
-| Self-hosted | `providers/self-hosted` | `self-hosted` ($0 platform charge; your infrastructure cost is not included) |
 
-Providers that bill a flat fee or license instead of per minute (RunsOn, Cirrus Runners) have `billing.unit: "flat"`, `price_usd_per_minute: 0` and a `flat_fee` on each runner. The page shows them as "Flat fee" and sorts them after metered prices. Self-hosted (`billing.unit: "none"`) is shown as free. Each provider's `billing.notes` describes its real cost model.
+Providers that bill a flat fee or license instead of per minute (RunsOn, Cirrus Runners) have `billing.unit: "flat"`, `price_usd_per_minute: 0` and a `flat_fee` on each runner. They aren't directly comparable with per-minute prices, so the site lists them on a separate page, [Flat-fee & license plans](https://runnerdb.stamp.build/flat-fee/), not in the main table. The [cost calculator](https://runnerdb.stamp.build/calculator/) puts both kinds side by side: per-minute runners cost minutes × `price_usd_per_minute`, flat-fee runners `flat_fee.amount_usd` (per month, or per year / 12) × concurrent jobs. Runners without a fixed `amount_usd` (RunsOn: AWS cost + license) are listed but not ranked. `api.json` includes all providers. Each provider's `billing.notes` describes its real cost model.
 
 **Wanted, contributions welcome:** GitLab SaaS runners, CircleCI, GitHub Linux/Windows larger runners and GPU runners. Please add only prices you can link to a public source. (BuildJet for GitHub Actions has shut down and is not listed.)
 
@@ -49,7 +49,7 @@ site/                        # the web page: Vite + React + Tailwind, shadcn/ui 
 | `name` | yes | Display name |
 | `homepage` | yes | https URL |
 | `pricing_url` | yes | Official pricing page |
-| `billing.unit` | yes | `minute`, `second`, `flat` (flat fee or license, not metered per minute: every runner has `flat_fee` and `price_usd_per_minute: 0`) or `none` (no charge, e.g. self-hosted) |
+| `billing.unit` | yes | `minute`, `second` or `flat` (flat fee or license, not metered per minute: every runner has `flat_fee` and `price_usd_per_minute: 0`) |
 | `billing.rounding` | yes | `per_job_ceil` (each job rounded up to a whole unit), `per_second`, `none`, `unknown` |
 | `billing.base_rate_usd` | no | For multiplier-based billing: USD per billing minute at 1x. Every runner must then set `multiplier`, and `price_usd_per_minute` must equal `base_rate_usd × multiplier` (the build checks this). |
 | `billing.notes` | no | Free text |
@@ -160,4 +160,4 @@ Amplify runs the same two commands (see `amplify.yml`).
 - **Data** (`providers/`, `schema/`, generated `api.json` / `schema.json`): [CC0-1.0](DATA_LICENSE). Public domain; use it for anything.
 - **Code** (`build.mjs`, `site/`, the generated page, workflow): [MIT](LICENSE). `site/src/components/ui/` is adapted from shadcn/ui (MIT).
 
-- **Provider names and logos** (GitHub, Blacksmith, ...): trademarks of their respective owners, not covered by MIT or CC0. runnerdb is not affiliated with or endorsed by any provider; logos are used only to identify each provider. See [NOTICE](NOTICE).
+- **Provider names and logos**: trademarks of their respective owners, not covered by MIT or CC0. runnerdb is not affiliated with or endorsed by any provider; logos are used only to identify each provider. See [NOTICE](NOTICE).

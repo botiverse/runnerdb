@@ -23,5 +23,13 @@ export default defineConfig({
     emptyOutDir: false, // keep api.json and schema.json
     assetsDir: 'assets',
     chunkSizeWarningLimit: 700,
+    rollupOptions: {
+      // Three pages: the per-minute table (index.html), calculator/ (cost calculator) and flat-fee/ (flat-fee & license plans).
+      input: {
+        main: path.resolve(import.meta.dirname, 'index.html'),
+        calculator: path.resolve(import.meta.dirname, 'calculator/index.html'),
+        'flat-fee': path.resolve(import.meta.dirname, 'flat-fee/index.html'),
+      },
+    },
   },
 })

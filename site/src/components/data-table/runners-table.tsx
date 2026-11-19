@@ -28,7 +28,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { OS_LABEL, formatDate, providers, runners, type Runner, type Unit } from '@/lib/data'
-import { ArchBadge, LabelChip, OsBadge, Price, ProviderAvatar, PublicFree } from '@/components/runner-bits'
+import { ArchBadge, LabelChip, OsBadge, OsIcon, Price, ProviderAvatar, PublicFree } from '@/components/runner-bits'
 import { makeColumns } from './columns'
 import { DataTableFacetedFilter } from './faceted-filter'
 import { DataTableViewOptions } from './view-options'
@@ -114,7 +114,7 @@ export function RunnersTable() {
           <DataTableFacetedFilter
             column={table.getColumn('os')}
             title="OS"
-            options={(Object.keys(OS_LABEL) as Runner['os'][]).map((os) => ({ value: os, label: OS_LABEL[os] }))}
+            options={(Object.keys(OS_LABEL) as Runner['os'][]).map((os) => ({ value: os, label: OS_LABEL[os], icon: <OsIcon os={os} className="size-4 text-muted-foreground" /> }))}
           />
           <DataTableFacetedFilter
             column={table.getColumn('arch')}
@@ -215,7 +215,7 @@ export function RunnersTable() {
                   <div className="text-xs text-muted-foreground">{r.providerShort}</div>
                 </div>
               </div>
-              <Price value={r.price} flatFee={r.flatFee} unit={unit} />
+              <Price value={r.price} unit={unit} />
             </div>
             <div className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm">
               <OsBadge os={r.os} />
