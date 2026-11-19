@@ -1,0 +1,17 @@
+{
+  "id": "linux-x64-md",
+  "labels": [
+    "ghcr.io/cirruslabs/ubuntu-runner-amd64:24.04-md"
+  ],
+  "os": "linux",
+  "os_version": "ubuntu-24.04",
+  "arch": "x64",
+  "vcpu": 8,
+  "memory_gb": 24,
+  "disk_gb": 100,
+  "price_usd_per_minute": 0,
+  "public_repo_free": false,
+  "source_url": "https://cirrus-runners.app/pricing/",
+  "verified_as_of": "2026-11-19",
+  "notes": "Flat-fee runner: Cirrus Runners cost $150/month per concurrency unit with no per-minute charge or minute limit; this resource class occupies 0.5 unit(s), so one concurrent job of this size needs $75/month of subscription. $0 is the per-minute price only. KVM available. Specs: https://cirrus-runners.app/setup/"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "macos-arm64-xl",
+  "labels": [
+    "ghcr.io/cirruslabs/macos-runner:tahoe-xl"
+  ],
+  "os": "macos",
+  "os_version": "macos-26",
+  "arch": "arm64",
+  "vcpu": 8,
+  "memory_gb": 32,
+  "disk_gb": 130,
+  "price_usd_per_minute": 0,
+  "public_repo_free": false,
+  "source_url": "https://cirrus-runners.app/pricing/",
+  "verified_as_of": "2026-11-19",
+  "notes": "Flat-fee runner: Cirrus Runners cost $150/month per concurrency unit with no per-minute charge or minute limit; this resource class occupies 2 unit(s), so one concurrent job of this size needs $300/month of subscription. $0 is the per-minute price only. Apple M4 Pro. Specs: https://cirrus-runners.app/setup/ (the same page's example text says 24 GB for XL macOS; the resource-class table says 32 GB)."
+}
