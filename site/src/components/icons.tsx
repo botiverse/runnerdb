@@ -101,16 +101,11 @@ export function WindowsIcon(props: SVGProps<SVGSVGElement>) {
   )
 }
 
+// Stamp's green (web foundation --success, oklch(0.5435 0.1116 159.5) = #218358).
 export function Logo(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 32 32" aria-hidden="true" {...props}>
-      <defs>
-        <linearGradient id="rdb-g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#8b7dff" />
-          <stop offset="1" stopColor="#4f3fe0" />
-        </linearGradient>
-      </defs>
-      <rect width="32" height="32" rx="8" fill="url(#rdb-g)" />
+      <rect width="32" height="32" rx="8" fill="#218358" />
       <path d="M9 11h14M9 16h14M9 21h8" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
     </svg>
   )
