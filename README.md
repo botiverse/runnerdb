@@ -14,9 +14,17 @@ Every price has a `source_url` and a `verified_as_of` date, so you can see where
 | --- | --- | --- |
 | GitHub-hosted | `providers/github` | Linux x64/ARM, Windows, macOS standard + macOS large/xlarge |
 | Blacksmith | `providers/blacksmith` | Linux x64/ARM 2-32 vCPU, Windows 4-16 vCPU, macOS 6/12 vCPU |
+| Depot | `providers/depot` | Linux x64/ARM 2-64 vCPU, Windows 2-64 vCPU, macOS 8 vCPU |
+| Namespace | `providers/namespace` | Linux x64/ARM, Windows and macOS standard shapes (unit-minute billing) |
+| Ubicloud | `providers/ubicloud` | Linux x64 standard + premium and ARM, 2-30 vCPU |
+| WarpBuild | `providers/warpbuild` | Linux x64/ARM 2-32 vCPU, ARM on Apple Silicon, Windows 4-32 vCPU, macOS 6/12 vCPU |
+| RunsOn | `providers/runs-on` | Flex predefined Linux runners. $0 per minute: you pay AWS directly plus a flat annual license |
+| Cirrus Runners | `providers/cirrus-runners` | macOS, Linux x64/ARM, Linux GPU. $0 per minute: flat $150/month per concurrency unit |
 | Self-hosted | `providers/self-hosted` | `self-hosted` ($0 platform charge; your infrastructure cost is not included) |
 
-**Wanted, contributions welcome:** Depot, Namespace, Ubicloud, RunsOn, BuildJet, Cirrus Runners, WarpBuild, GitLab SaaS runners, CircleCI, GitHub Linux/Windows larger runners and GPU runners. Please add only prices you can link to a public source.
+Providers that don't bill per minute (RunsOn, Cirrus Runners, self-hosted) have `billing.unit: "none"` and `price_usd_per_minute: 0`; their real cost model is described in `billing.notes`.
+
+**Wanted, contributions welcome:** GitLab SaaS runners, CircleCI, GitHub Linux/Windows larger runners and GPU runners. Please add only prices you can link to a public source. (BuildJet for GitHub Actions has shut down and is not listed.)
 
 ## Layout
 
