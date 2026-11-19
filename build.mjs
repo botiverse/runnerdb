@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-// runnerdb build: validates providers/**.json against schema/*.json and writes dist/.
+// runnerdb build: validates providers/**.json against schema/*.json and writes the data files in dist/.
 //
-//   node build.mjs           validate, then write dist/api.json, dist/schema.json, dist/index.html
+//   node build.mjs           validate, then write dist/api.json and dist/schema.json
+//                            (the page itself is built by site/: npm run build --prefix site)
 //   node build.mjs --check   validate only; exit 1 on any error
 //
 // No dependencies: Node >= 18 standard library only.
@@ -249,102 +250,7 @@ const combined = {
 };
 fs.writeFileSync(path.join(DIST, 'schema.json'), JSON.stringify(combined, null, 2) + '\n');
 
-fs.writeFileSync(path.join(DIST, 'index.html'), renderHTML(api));
-console.log(`wrote ${['api.json', 'schema.json', 'index.html'].map((f) => rel(path.join(DIST, f))).join(', ')}`);
+console.log(`wrote ${['api.json', 'schema.json'].map((f) => rel(path.join(DIST, f))).join(', ')}`);
+// The web page (dist/index.html + dist/assets/) is built by the Vite app in site/,
+// which embeds dist/api.json at build time: `npm ci --prefix site && npm run build --prefix site`.
 
-function renderHTML(api) {
-  const rows = Object.values(api.providers).flatMap((p) =>
-    Object.values(p.runners).map((r) => ({
-      provider: p.name,
-      id: r.id,
-      labels: r.labels.join(' '),
-      os: r.os,
-      arch: r.arch,
-      vcpu: r.vcpu,
-      memory_gb: r.memory_gb ?? null,
-      price: r.price_usd_per_minute,
-      multiplier: r.multiplier ?? null,
-      public_free: r.public_repo_free,
-      flex: r.scheduling_discounts?.flex ?? null,
-      as_of: r.as_of,
-      source: r.source_url,
-    })),
-  );
-  // Escape "<" so data can never close the <script> tag.
-  const data = JSON.stringify(rows).replace(/</g, '\\u003c');
-  return `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>runnerdb: CI runner prices</title>
-<style>
-  :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
-  body { margin: 2rem auto; max-width: 1200px; padding: 0 1rem; }
-  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
-  th, td { padding: 0.35rem 0.6rem; border-bottom: 1px solid #8884; text-align: left; vertical-align: top; }
-  th { cursor: pointer; user-select: none; white-space: nowrap; position: sticky; top: 0; background: Canvas; }
-  th[aria-sort="ascending"]::after { content: " \\25B2"; }
-  th[aria-sort="descending"]::after { content: " \\25BC"; }
-  td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  code { font-size: 0.85em; }
-  input { padding: 0.35rem; width: 20rem; max-width: 100%; margin-bottom: 1rem; }
-</style>
-</head>
-<body>
-<h1>runnerdb</h1>
-<p>Open dataset of CI runner prices, specs and billing rules. Data as of ${api.as_of}.
-JSON: <a href="api.json">api.json</a> &middot; <a href="schema.json">schema.json</a> &middot; Source and corrections: <a href="https://github.com/botiverse/runnerdb">github.com/botiverse/runnerdb</a></p>
-<p>Prices are list prices in USD per runtime minute, before plan quotas, discounts and per-job rounding. Click a column to sort.</p>
-<input id="q" type="search" placeholder="Filter (provider, label, os...)" aria-label="Filter">
-<table>
-<thead><tr>
-  <th data-k="provider">Provider</th><th data-k="id">Runner</th><th data-k="labels">runs-on labels</th>
-  <th data-k="os">OS</th><th data-k="arch">Arch</th><th data-k="vcpu">vCPU</th><th data-k="memory_gb">RAM GB</th>
-  <th data-k="price">$/min</th><th data-k="price">$/hour</th><th data-k="multiplier">Multiplier</th>
-  <th data-k="flex">Flex</th><th data-k="public_free">Free on public repos</th><th data-k="as_of">Verified</th>
-</tr></thead>
-<tbody id="rows"></tbody>
-</table>
-<script>
-const DATA = ${data};
-const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-const dash = (v, f = (x) => x) => (v === null || v === undefined ? '&ndash;' : esc(f(v)));
-const usd = (x) => '$' + (+x.toFixed(4)).toString();
-let sortKey = 'price', dir = 1;
-function render() {
-  const q = document.getElementById('q').value.toLowerCase();
-  const rows = DATA.filter((r) => !q || Object.values(r).join(' ').toLowerCase().includes(q));
-  rows.sort((a, b) => {
-    const x = a[sortKey], y = b[sortKey];
-    if (x === y) return 0;
-    if (x === null) return 1;
-    if (y === null) return -1;
-    return (x < y ? -1 : 1) * dir;
-  });
-  document.getElementById('rows').innerHTML = rows.map((r) => '<tr>' +
-    '<td>' + esc(r.provider) + '</td>' +
-    '<td><a href="' + esc(r.source) + '">' + esc(r.id) + '</a></td>' +
-    '<td>' + r.labels.split(' ').map((l) => '<code>' + esc(l) + '</code>').join('<br>') + '</td>' +
-    '<td>' + esc(r.os) + '</td><td>' + esc(r.arch) + '</td>' +
-    '<td class="num">' + dash(r.vcpu) + '</td><td class="num">' + dash(r.memory_gb) + '</td>' +
-    '<td class="num">' + usd(r.price) + '</td><td class="num">' + usd(r.price * 60) + '</td>' +
-    '<td class="num">' + dash(r.multiplier, (m) => m + 'x') + '</td>' +
-    '<td class="num">' + dash(r.flex, (f) => f + 'x') + '</td>' +
-    '<td>' + (r.public_free ? 'yes' : 'no') + '</td><td>' + esc(r.as_of) + '</td></tr>').join('');
-  document.querySelectorAll('th').forEach((th) => th.removeAttribute('aria-sort'));
-}
-document.querySelectorAll('th').forEach((th) => th.addEventListener('click', () => {
-  const k = th.dataset.k;
-  dir = k === sortKey ? -dir : 1;
-  sortKey = k;
-  render();
-  th.setAttribute('aria-sort', dir === 1 ? 'ascending' : 'descending');
-}));
-document.getElementById('q').addEventListener('input', render);
-render();
-</script>
-</body>
-</html>
-`;
-}

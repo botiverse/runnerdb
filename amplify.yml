@@ -1,11 +1,21 @@
 version: 1
 frontend:
   phases:
+    preBuild:
+      commands:
+        # site/ (Vite 8) needs Node >= 20.19; the Amplify image ships nvm.
+        - nvm install 22 && nvm use 22
+        - node --version
+        - npm ci --prefix site
     build:
       commands:
-        - node --version
-        - node build.mjs
+        # Validates the dataset and writes dist/api.json + dist/schema.json,
+        # then builds the page into dist/index.html + dist/assets/ (embeds api.json).
+        - npm run build --prefix site
   artifacts:
     baseDirectory: dist
     files:
       - '**/*'
+  cache:
+    paths:
+      - site/node_modules/**/*
