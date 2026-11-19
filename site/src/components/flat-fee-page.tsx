@@ -3,10 +3,18 @@ import { ArrowLeftIcon, ExternalLinkIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { ArchBadge, LabelChip, OsBadge, ProviderAvatar } from '@/components/runner-bits'
+import { HeaderHelp } from '@/components/header-help'
 import { MINUTES_PER_MONTH, cheapestComparable, flatProviders, formatDate, formatPerMinute, type Runner } from '@/lib/data'
 
 // Providers billed by a flat fee or license (billing.unit "flat"). They have no per-minute price, so
 // they are listed here, one table per provider, instead of in the main per-minute table.
+
+// Header explanations (tooltip on hover, popover from the help icon).
+const HEADER_HELP: Record<string, string> = {
+  'runs-on labels': "Exact labels to put in a workflow's runs-on to get this runner. * matches one or more characters. Click a label to copy it.",
+  'vCPU / RAM': 'Virtual CPUs and memory in GB, as published by the provider. – means not published.',
+  Fee: 'Fixed fee or license per period, not metered per minute. "AWS cost + license": you also pay AWS for the instances in your own account.',
+}
 
 const Dash = () => <span className="text-muted-foreground/60">–</span>
 
@@ -104,13 +112,10 @@ function ProviderSection({ p }: { p: (typeof flatProviders)[number] }) {
             <TableRow className="hover:bg-transparent">
               {['Runner', 'runs-on labels', 'OS / arch', 'vCPU / RAM', 'Fee', 'Notes'].map((h) => (
                 <TableHead key={h} className="h-11 px-2.5 text-xs font-medium tracking-wide text-muted-foreground uppercase first:pl-5 last:pr-5">
-                  {h === 'runs-on labels' ? (
-                    <>
-                      <code className="normal-case">runs-on</code> labels
-                    </>
-                  ) : (
-                    h
-                  )}
+                  {(() => {
+                    const label = h === 'runs-on labels' ? <><code className="normal-case">runs-on</code> labels</> : h
+                    return HEADER_HELP[h] ? <HeaderHelp help={HEADER_HELP[h]} label={h}>{label}</HeaderHelp> : label
+                  })()}
                 </TableHead>
               ))}
             </TableRow>

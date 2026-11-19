@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { ArchBadge, OsIcon, ProviderAvatar } from '@/components/runner-bits'
+import { HeaderHelp } from '@/components/header-help'
 import { MINUTES_PER_MONTH, OS_LABEL, allProviders, allRunners, formatPerMinute, formatUsd, type Runner } from '@/lib/data'
 
 // Cost calculator: everything is computed in the browser from the embedded api.json; inputs live in the
@@ -99,6 +100,16 @@ function compute(i: Inputs) {
   rows.sort((a, b) => a.monthly - b.monthly || (b.r.vcpu ?? 0) - (a.r.vcpu ?? 0) || a.r.key.localeCompare(b.r.key))
   needsPrice.sort((a, b) => a.provider.localeCompare(b.provider) || a.arch.localeCompare(b.arch) || (a.vcpu ?? 0) - (b.vcpu ?? 0))
   return { rows, needsPrice, minUnits }
+}
+
+// Header explanations for the results table (tooltip on hover, popover from the help icon).
+const HEADER_HELP: Record<string, string> = {
+  'vCPU / RAM': 'Virtual CPUs and memory in GB. With a vCPU filter, runners with at least that many vCPU are listed.',
+  Rate: 'List price per runtime minute, or the flat fee per concurrent job for flat-fee plans. Free-tier minutes are subtracted only when that option is on.',
+  'Monthly cost':
+    'Per-minute runners: billable minutes × rate. Flat-fee plans: monthly fee × concurrent jobs, at least enough jobs to fit your minutes (43,200 min per job in 30 days). Before per-job rounding, quotas and negotiated discounts.',
+  'Effective $/min': 'Monthly cost ÷ your minutes. For flat-fee plans it drops as usage rises.',
+  'vs cheapest': 'Extra monthly cost compared with the cheapest option for these inputs, with the ratio in brackets.',
 }
 
 const fmtInt = (n: number) => n.toLocaleString('en-US')
@@ -340,7 +351,13 @@ function Results({ rows, i }: { rows: Row[]; i: Inputs }) {
             <TableRow className="hover:bg-transparent">
               {['#', 'Runner', 'vCPU / RAM', 'Rate', 'Monthly cost', 'Effective $/min', 'vs cheapest'].map((h, n) => (
                 <TableHead key={h} className={cn('h-11 px-2.5 text-xs font-medium tracking-wide text-muted-foreground uppercase first:pl-5 last:pr-5', n >= 4 && 'text-right')}>
-                  {h}
+                  {HEADER_HELP[h] ? (
+                    <HeaderHelp help={HEADER_HELP[h]} label={h}>
+                      {h}
+                    </HeaderHelp>
+                  ) : (
+                    h
+                  )}
                 </TableHead>
               ))}
             </TableRow>
