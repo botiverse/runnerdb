@@ -11,6 +11,11 @@
   "arch": "x64",
   "vcpu": null,
   "price_usd_per_minute": 0,
+  "flat_fee": {
+    "summary": "AWS cost + license",
+    "period": "year",
+    "notes": "EC2/EBS billed by AWS to your account at AWS prices; RunsOn license EUR 300-3,600/year per company, sized by jobs per month."
+  },
   "public_repo_free": true,
   "source_url": "https://runs-on.com/docs/runners/platforms/linux/",
   "verified_as_of": "2026-11-19",

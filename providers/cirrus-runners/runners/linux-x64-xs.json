@@ -10,8 +10,14 @@
   "memory_gb": 6,
   "disk_gb": 50,
   "price_usd_per_minute": 0,
+  "flat_fee": {
+    "summary": "$18.75/mo per concurrent job",
+    "amount_usd": 18.75,
+    "period": "month",
+    "notes": "$150/month per concurrency unit; this resource class uses 0.125 unit(s)."
+  },
   "public_repo_free": false,
   "source_url": "https://cirrus-runners.app/pricing/",
   "verified_as_of": "2026-11-19",
-  "notes": "Flat-fee runner: Cirrus Runners cost $150/month per concurrency unit with no per-minute charge or minute limit; this resource class occupies 0.125 unit(s), so one concurrent job of this size needs $18.75/month of subscription. $0 is the per-minute price only. KVM available. Specs: https://cirrus-runners.app/setup/"
+  "notes": "KVM available. Specs: https://cirrus-runners.app/setup/"
 }

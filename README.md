@@ -22,7 +22,7 @@ Every price has a `source_url` and a `verified_as_of` date, so you can see where
 | Cirrus Runners | `providers/cirrus-runners` | macOS, Linux x64/ARM, Linux GPU. $0 per minute: flat $150/month per concurrency unit |
 | Self-hosted | `providers/self-hosted` | `self-hosted` ($0 platform charge; your infrastructure cost is not included) |
 
-Providers that don't bill per minute (RunsOn, Cirrus Runners, self-hosted) have `billing.unit: "none"` and `price_usd_per_minute: 0`; their real cost model is described in `billing.notes`.
+Providers that bill a flat fee or license instead of per minute (RunsOn, Cirrus Runners) have `billing.unit: "flat"`, `price_usd_per_minute: 0` and a `flat_fee` on each runner. The page shows them as "Flat fee" and sorts them after metered prices. Self-hosted (`billing.unit: "none"`) is shown as free. Each provider's `billing.notes` describes its real cost model.
 
 **Wanted, contributions welcome:** GitLab SaaS runners, CircleCI, GitHub Linux/Windows larger runners and GPU runners. Please add only prices you can link to a public source. (BuildJet for GitHub Actions has shut down and is not listed.)
 
@@ -49,7 +49,7 @@ site/                        # the web page: Vite + React + Tailwind, shadcn/ui 
 | `name` | yes | Display name |
 | `homepage` | yes | https URL |
 | `pricing_url` | yes | Official pricing page |
-| `billing.unit` | yes | `minute`, `second` or `none` |
+| `billing.unit` | yes | `minute`, `second`, `flat` (flat fee or license, not metered per minute: every runner has `flat_fee` and `price_usd_per_minute: 0`) or `none` (no charge, e.g. self-hosted) |
 | `billing.rounding` | yes | `per_job_ceil` (each job rounded up to a whole unit), `per_second`, `none`, `unknown` |
 | `billing.base_rate_usd` | no | For multiplier-based billing: USD per billing minute at 1x. Every runner must then set `multiplier`, and `price_usd_per_minute` must equal `base_rate_usd × multiplier` (the build checks this). |
 | `billing.notes` | no | Free text |
@@ -70,6 +70,7 @@ site/                        # the web page: Vite + React + Tailwind, shadcn/ui 
 | `memory_gb`, `disk_gb` | no | Numbers |
 | `gpu` | no | `{ model, count, memory_gb? }` |
 | `price_usd_per_minute` | yes | List price per runtime minute, before plan quotas, discounts and rounding |
+| `flat_fee` | with `billing.unit: "flat"` | `{ summary, amount_usd?, period?, notes? }`: `summary` is short display text (e.g. `$150/mo per concurrent job`); `amount_usd` is the fee per `period` (`month` or `year`) when one fixed amount applies. Required for, and only allowed on, flat-billed providers. |
 | `multiplier` | no | Billing-minute multiplier (required when the provider sets `base_rate_usd`) |
 | `public_repo_free` | yes | `true` if jobs from public repositories are not billed |
 | `scheduling_discounts` | no | Price factors for optional modes, e.g. `{"flex": 0.6}` = 60% of list price |

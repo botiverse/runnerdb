@@ -11,8 +11,14 @@
   "memory_gb": 24,
   "disk_gb": 100,
   "price_usd_per_minute": 0,
+  "flat_fee": {
+    "summary": "$150/mo per concurrent job",
+    "amount_usd": 150,
+    "period": "month",
+    "notes": "$150/month per concurrency unit; this resource class uses 1 unit(s)."
+  },
   "public_repo_free": false,
   "source_url": "https://cirrus-runners.app/pricing/",
   "verified_as_of": "2026-11-19",
-  "notes": "Flat-fee runner: Cirrus Runners cost $150/month per concurrency unit with no per-minute charge or minute limit; this resource class occupies 1 unit(s), so one concurrent job of this size needs $150/month of subscription. $0 is the per-minute price only. Apple Silicon hosts. Specs: https://cirrus-runners.app/setup/"
+  "notes": "Apple Silicon hosts. Specs: https://cirrus-runners.app/setup/"
 }

@@ -3,13 +3,13 @@
   "homepage": "https://runs-on.com",
   "pricing_url": "https://runs-on.com/pricing/",
   "billing": {
-    "unit": "none",
+    "unit": "flat",
     "rounding": "none",
-    "notes": "RunsOn does not meter minutes. Runners are EC2 instances in your own AWS account: AWS bills compute at its own (Spot or on-demand) prices with no RunsOn markup, to the second. RunsOn charges one flat annual license per company sized by jobs per month: Starter (<50k jobs/month) EUR 300/year, Growth (<200k) EUR 900/year, Scale (<500k) EUR 1,800/year, Sponsorship (unlimited, source access) EUR 3,600/year (USD prices are also shown on the pricing page). The pricing page shows per-minute AWS cost estimates (7-day average Spot prices in us-east-1, including a 30 GB gp3 volume), which vary daily and are not RunsOn list prices, so runnerdb records $0 and leaves the AWS cost out."
+    "notes": "RunsOn does not meter minutes. Runners are EC2 instances in your own AWS account: AWS bills compute at its own (Spot or on-demand) prices with no RunsOn markup, to the second. RunsOn charges one flat annual license per company sized by jobs per month: Starter (<50k jobs/month) EUR 300/year, Growth (<200k) EUR 900/year, Scale (<500k) EUR 1,800/year, Sponsorship (unlimited, source access) EUR 3,600/year (USD prices are also shown on the pricing page). The pricing page shows per-minute AWS cost estimates (7-day average Spot prices in us-east-1, including a 30 GB gp3 volume), which vary daily and are not RunsOn list prices, so runnerdb uses billing.unit \"flat\" (price_usd_per_minute 0, flat_fee summary \"AWS cost + license\") and leaves the AWS cost out."
   },
   "public_repo_policy": "not_applicable",
   "free_tier": {
     "notes": "Free license for open-source, non-profit and personal non-commercial use (in exchange for a link back). 15-day free trial on paid licenses. AWS costs still apply."
   },
-  "notes": "Self-hosted, ephemeral GitHub Actions runners in your AWS account (Linux x64/arm64, Windows, GPU; no macOS). Labels are dynamic (runs-on=${{ github.run_id }}/runner=<name>/...); runnerdb lists the Flex predefined Linux runners. Windows and GPU runners are configured per job with instance family/image labels and have no predefined runner name. Like self-hosted runners, the $0 price excludes your infrastructure cost."
+  "notes": "Self-hosted, ephemeral GitHub Actions runners in your AWS account (Linux x64/arm64, Windows, GPU; no macOS). Labels are dynamic (runs-on=${{ github.run_id }}/runner=<name>/...); runnerdb lists the Flex predefined Linux runners. Windows and GPU runners are configured per job with instance family/image labels and have no predefined runner name. Your AWS infrastructure cost is not included in runnerdb."
 }

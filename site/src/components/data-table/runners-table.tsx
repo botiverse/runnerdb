@@ -215,7 +215,7 @@ export function RunnersTable() {
                   <div className="text-xs text-muted-foreground">{r.providerShort}</div>
                 </div>
               </div>
-              <Price value={r.price} unit={unit} />
+              <Price value={r.price} flatFee={r.flatFee} unit={unit} />
             </div>
             <div className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm">
               <OsBadge os={r.os} />

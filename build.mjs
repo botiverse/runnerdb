@@ -185,6 +185,15 @@ for (const pEnt of listDir(PROVIDERS_DIR)) {
     if (provider.billing.unit === 'none' && runner.price_usd_per_minute !== 0) {
       fail(rFile, 'provider billing.unit is "none" but price_usd_per_minute is not 0');
     }
+    if (provider.billing.unit === 'flat') {
+      if (!runner.flat_fee) fail(rFile, 'provider billing.unit is "flat"; "flat_fee" is required');
+      if (runner.price_usd_per_minute !== 0) fail(rFile, 'provider billing.unit is "flat" but price_usd_per_minute is not 0');
+    } else if (runner.flat_fee) {
+      fail(rFile, '"flat_fee" set but provider billing.unit is not "flat"');
+    }
+    if (runner.flat_fee && runner.flat_fee.amount_usd !== undefined && runner.flat_fee.period === undefined) {
+      fail(rFile, 'flat_fee.amount_usd needs flat_fee.period');
+    }
     if (provider.public_repo_policy === 'billed' && runner.public_repo_free) {
       fail(rFile, 'provider public_repo_policy is "billed" but runner says public_repo_free: true');
     }

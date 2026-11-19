@@ -94,10 +94,13 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
     },
     {
       id: 'price',
-      accessorKey: 'price',
+      // Flat-fee runners have no per-minute price: sort them after all metered/free runners in both directions.
+      accessorFn: (r) => (r.flatFee ? undefined : r.price),
       meta: { title: 'Price' },
+      sortUndefined: 'last',
+      sortingFn: 'basic',
       header: ({ column }) => <DataTableColumnHeader column={column} title={`Price $/${unit}`} align="right" />,
-      cell: ({ row }) => <Price value={row.original.price} unit={unit} />,
+      cell: ({ row }) => <Price value={row.original.price} flatFee={row.original.flatFee} unit={unit} />,
     },
     {
       id: 'multiplier',

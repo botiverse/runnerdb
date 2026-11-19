@@ -3,9 +3,9 @@
   "homepage": "https://cirrus-runners.app",
   "pricing_url": "https://cirrus-runners.app/pricing/",
   "billing": {
-    "unit": "none",
+    "unit": "flat",
     "rounding": "none",
-    "notes": "Flat subscription, not metered: each Cirrus Runner (one concurrency unit) costs $150/month with unlimited minutes. Smaller Linux resource classes use 0.125-0.5 units, XL and GPU use 2 units. runnerdb's per-minute model cannot express a flat fee, so price_usd_per_minute is 0 and the monthly cost is in each runner's notes. 15% off for an annual commitment or 50% off for non-profits (not applied)."
+    "notes": "Flat subscription, not metered: each Cirrus Runner (one concurrency unit) costs $150/month with unlimited minutes. Smaller Linux resource classes use 0.125-0.5 units, XL and GPU use 2 units. Represented as billing.unit \"flat\": price_usd_per_minute is 0 and each runner's flat_fee gives the monthly cost of one concurrent job of that size. 15% off for an annual commitment or 50% off for non-profits (not applied)."
   },
   "public_repo_policy": "not_applicable",
   "free_tier": {

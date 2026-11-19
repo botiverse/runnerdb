@@ -65,6 +65,7 @@ CI runs the same command. It validates against the schemas and also checks that:
 - runner `id` matches the file name
 - no `runs-on` label (or `*` pattern) is claimed by two runners
 - `price_usd_per_minute == base_rate_usd × multiplier` for multiplier-billed providers
+- runners of `billing.unit: "flat"` providers have a `flat_fee` and `price_usd_per_minute` 0 (and `flat_fee` appears nowhere else)
 - `verified_as_of` is a real date and not in the future
 
 By contributing you agree that data changes are released under CC0-1.0 and code changes under MIT.

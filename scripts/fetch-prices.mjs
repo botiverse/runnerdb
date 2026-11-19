@@ -309,7 +309,7 @@ const FETCHERS = {
 
   'runs-on': {
     sourceUrls: ['https://runs-on.com/docs/runners/platforms/linux/'],
-    // RunsOn has no per-minute price (flat annual license + your own AWS bill), stored as 0.
+    // RunsOn has no per-minute price (flat annual license + your own AWS bill), stored as billing.unit "flat".
     // Check that the pricing model is unchanged and that each predefined runner still exists.
     async fetch() {
       const pricing = pageText(await get('https://runs-on.com/pricing/'));
@@ -327,7 +327,7 @@ const FETCHERS = {
 
   'cirrus-runners': {
     sourceUrls: ['https://cirrus-runners.app/pricing/'],
-    // Flat $150/month per concurrency unit, unlimited minutes; stored as 0 per minute with the fee in notes.
+    // Flat $150/month per concurrency unit, unlimited minutes; stored as billing.unit "flat" with each runner's fee in flat_fee.
     // Check the fee and the unlimited-minutes wording on the pricing page, and that each runner's resource
     // class is still in the setup page's tables (Resource Class | Suffix | CPUs | Memory | [GPU] | Disk |
     // Concurrency), which come in the order macOS, Linux x86, Linux Arm, Linux GPU.
@@ -335,7 +335,7 @@ const FETCHERS = {
       const pricing = pageText(await get('https://cirrus-runners.app/pricing/'));
       const fee = /costs \$(\d+(?:\.\d+)?) a month/i.exec(pricing);
       need(fee, 'cirrus-runners.app/pricing: monthly fee per Cirrus Runner not found (page redesign?)');
-      need(+fee[1] === 150, `cirrus-runners.app/pricing: fee changed from $150 to $${fee[1]} per runner per month; update the notes in providers/cirrus-runners by hand`);
+      need(+fee[1] === 150, `cirrus-runners.app/pricing: fee changed from $150 to $${fee[1]} per runner per month; update flat_fee in providers/cirrus-runners by hand`);
       need(/no limit on the amount of minutes/i.test(pricing), 'cirrus-runners.app/pricing no longer says minutes are unlimited; the $0 per-minute model needs a manual review');
       const tables = htmlTables(await get('https://cirrus-runners.app/setup/'))
         .filter((t) => t.rows[0]?.some((c) => /^suffix$/i.test(c)) && t.rows[0].some((c) => /^concurrency$/i.test(c)));

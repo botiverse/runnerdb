@@ -11,6 +11,7 @@ type ApiRunner = {
   disk_gb?: number
   gpu?: { model: string; count: number; memory_gb?: number }
   price_usd_per_minute: number
+  flat_fee?: { summary: string; amount_usd?: number; period?: 'month' | 'year'; notes?: string }
   multiplier?: number
   public_repo_free: boolean
   scheduling_discounts?: Record<string, number>
@@ -45,6 +46,8 @@ export type Runner = {
   vcpu: number | null
   memoryGb: number | null
   price: number
+  /** Short text for flat-fee/license runners (billing.unit "flat"); null for metered and free runners. */
+  flatFee: string | null
   multiplier: number | null
   flex: number | null
   publicFree: boolean
@@ -78,6 +81,7 @@ export const runners: Runner[] = Object.values(data.providers).flatMap((p) =>
     vcpu: r.vcpu,
     memoryGb: r.memory_gb ?? null,
     price: r.price_usd_per_minute,
+    flatFee: r.flat_fee?.summary ?? null,
     multiplier: r.multiplier ?? null,
     flex: r.scheduling_discounts?.flex ?? null,
     publicFree: r.public_repo_free,
