@@ -84,7 +84,7 @@ function BreakEven({ r, inline = false }: { r: Runner; inline?: boolean }) {
 function Source({ r }: { r: Runner }) {
   return (
     <a href={r.source} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 whitespace-nowrap text-xs text-muted-foreground hover:text-foreground">
-      Verified {formatDate(r.asOf)}
+      Checked {formatDate(r.asOf)}
       <ExternalLinkIcon className="size-3" />
     </a>
   )

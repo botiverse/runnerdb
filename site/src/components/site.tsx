@@ -127,10 +127,13 @@ export function SummaryLine() {
   ]
   return (
     <div className="flex flex-col gap-2 text-sm text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-      <p>
-        <span className="font-medium text-foreground">CI runner prices, specs and billing rules</span>
-        <span className="hidden sm:inline"> · open data, every price linked to its source</span>
-      </p>
+      <div>
+        <p>
+          <span className="font-medium text-foreground">CI runner prices per minute, specs and billing rules</span>
+          <span className="hidden sm:inline"> · open data, every price linked to its source</span>
+        </p>
+        <p className="mt-0.5 text-xs">Prices are list prices for one minute; see each provider for rounding and free minutes.</p>
+      </div>
       <ul className="flex flex-wrap items-center gap-1.5 text-xs">
         {items.map(([n, label]) => (
           <li key={label} className="inline-flex items-center gap-1 rounded-md border bg-card px-2 py-0.5">

@@ -105,7 +105,7 @@ function compute(i: Inputs) {
 // Header explanations for the results table (tooltip on hover, popover from the help icon).
 const HEADER_HELP: Record<string, string> = {
   'vCPU / RAM / Disk': 'Virtual CPUs, memory (RAM) in GB and disk (storage) in GB, as published by the provider; values that are not published are left out. With a vCPU filter, runners with at least that many vCPU are listed.',
-  Rate: 'List price per runtime minute, or the flat fee per concurrent job for flat-fee plans. Free-tier minutes are subtracted only when that option is on.',
+  Rate: 'What one minute costs at list price, or the flat fee per concurrent job for flat-fee plans. Free-tier minutes are subtracted only when that option is on.',
   'Monthly cost':
     'Per-minute runners: billable minutes × rate. Flat-fee plans: monthly fee × concurrent jobs, at least enough jobs to fit your minutes (43,200 min per job in 30 days). Before per-job rounding, quotas and negotiated discounts.',
   'Effective $/min': 'Monthly cost ÷ your minutes. For flat-fee plans it drops as usage rises.',
@@ -526,12 +526,12 @@ export function CalculatorPage() {
           <InfoIcon className="mt-0.5 size-3.5 shrink-0" />
           <div className="space-y-1">
             <p>
-              Per-minute: minutes × list price (multipliers are already part of each runner's price). Flat fee: monthly fee × concurrent
+              Per-minute: minutes × list price per minute (runners that count each minute as several billed minutes already have that in their price). Flat fee: monthly fee × concurrent
               jobs, with at least one job per {fmtInt(MINUTES_PER_MONTH)} minutes (30 days of one job running nonstop); yearly fees are divided by 12.
               Effective $/min = monthly cost ÷ minutes.
             </p>
             <p>
-              Not included: per-job rounding, optional scheduling discounts (such as Blacksmith flex), plan quotas, trials, annual or
+              Not included: per-job rounding, optional discounts such as Blacksmith's flex scheduling, plan quotas, trials, annual or
               non-profit discounts, storage and network. Per-minute costs don't depend on concurrency, but providers cap it by plan.
               Confirm prices at each provider's source before relying on them.
             </p>
