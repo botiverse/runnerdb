@@ -1,6 +1,5 @@
 import type { ColumnDef, FilterFn } from '@tanstack/react-table'
 import { ExternalLinkIcon } from 'lucide-react'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { flexDiscount, formatDate, formatPrice, type Runner, type Unit } from '@/lib/data'
 import { DataTableColumnHeader } from './column-header'
 import { HeaderHelp } from '@/components/header-help'
@@ -29,7 +28,7 @@ const HELP = {
   flex: (
     <>
       Blacksmith only: add <code className="font-mono">;scheduling=flex</code> to the end of the <code className="font-mono">runs-on</code> label to pay
-      less than Price. The job may take longer to start. −40% means you pay 60% of Price.
+      less. The job may take longer to start. Shown: what 1 minute costs with flex, and the discount off Price (−40% = you pay 60%).
     </>
   ),
   publicFree: 'Jobs from public repositories are not billed on this runner.',
@@ -161,23 +160,17 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
     {
       id: 'flex',
       accessorFn: (r) => r.flex ?? undefined,
-      meta: { title: 'Flex discount' },
+      meta: { title: 'Flex price' },
       sortingFn: 'basic',
       sortUndefined: 'last',
-      header: ({ column }) => <DataTableColumnHeader column={column} title={<>Flex<br />discount</>} help={HELP.flex} align="right" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title={<>Flex<br />price</>} help={HELP.flex} align="right" />,
       cell: ({ row: { original: r } }) =>
         r.flex == null ? (
           <div className="text-right"><Dash /></div>
         ) : (
-          <div className="text-right">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span className="cursor-help font-mono tabular-nums underline decoration-muted-foreground/40 decoration-dotted underline-offset-4">{flexDiscount(r.flex)}</span>
-              </TooltipTrigger>
-              <TooltipContent>
-                With flex: {formatPrice(r.price * r.flex, unit)}/{unit} ({Math.round(r.flex * 100)}% of Price)
-              </TooltipContent>
-            </Tooltip>
+          <div className="text-right font-mono tabular-nums">
+            {formatPrice(r.price * r.flex, unit)}
+            <span className="ml-1.5 text-xs text-muted-foreground">{flexDiscount(r.flex)}</span>
           </div>
         ),
     },

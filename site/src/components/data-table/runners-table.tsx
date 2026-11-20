@@ -27,7 +27,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { OS_LABEL, flexDiscount, formatDate, providers, runners, type Runner, type Unit } from '@/lib/data'
+import { OS_LABEL, flexDiscount, formatDate, formatPrice, providers, runners, type Runner, type Unit } from '@/lib/data'
 import { ArchBadge, LabelChip, OsBadge, OsIcon, Price, ProviderAvatar, PublicFree } from '@/components/runner-bits'
 import { makeColumns } from './columns'
 import { DataTableFacetedFilter } from './faceted-filter'
@@ -221,7 +221,7 @@ export function RunnersTable() {
             <div className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm">
               <OsBadge os={r.os} />
               <ArchBadge arch={r.arch} />
-              {[r.vcpu != null && `${r.vcpu} vCPU`, r.memoryGb != null && `${r.memoryGb} GB RAM`, r.diskGb != null && `${r.diskGb} GB disk`, r.multiplier != null && `counts as ${r.multiplier} min`, r.flex != null && `flex ${flexDiscount(r.flex)}`]
+              {[r.vcpu != null && `${r.vcpu} vCPU`, r.memoryGb != null && `${r.memoryGb} GB RAM`, r.diskGb != null && `${r.diskGb} GB disk`, r.multiplier != null && `counts as ${r.multiplier} min`, r.flex != null && `flex ${formatPrice(r.price * r.flex, unit)}/${unit} (${flexDiscount(r.flex)})`]
                 .filter(Boolean)
                 .map((t) => (
                   <span key={String(t)} className="font-mono text-xs text-muted-foreground tabular-nums">{t}</span>
