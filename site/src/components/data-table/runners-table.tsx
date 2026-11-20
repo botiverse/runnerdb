@@ -221,7 +221,7 @@ export function RunnersTable() {
             <div className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm">
               <OsBadge os={r.os} />
               <ArchBadge arch={r.arch} />
-              {[r.vcpu != null && `${r.vcpu} vCPU`, r.memoryGb != null && `${r.memoryGb} GB RAM`, r.diskGb != null && `${r.diskGb} GB disk`, r.multiplier != null && `${r.multiplier}× mult`, r.flex != null && `flex ${r.flex}×`]
+              {[r.vcpu != null && `${r.vcpu} vCPU`, r.memoryGb != null && `${r.memoryGb} GB RAM`, r.diskGb != null && `${r.diskGb} GB disk`, r.multiplier != null && `billed ${r.multiplier}× base rate`, r.flex != null && `flex ${r.flex}×`]
                 .filter(Boolean)
                 .map((t) => (
                   <span key={String(t)} className="font-mono text-xs text-muted-foreground tabular-nums">{t}</span>

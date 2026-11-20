@@ -24,7 +24,7 @@ const HELP = {
   vcpu: 'Number of virtual CPUs. – means the provider has not published a verified count.',
   memory: 'Memory (RAM) in GB, as published by the provider. – means not published.',
   disk: 'Disk (storage) in GB, as published by the provider. – means not published.',
-  multiplier: "Billing multiplier: billed minutes = runtime minutes × multiplier, at the provider's base rate.",
+  multiplier: "Billing multiplier: the provider charges one base rate per minute and bigger runners count as several minutes. Billed minutes = runtime minutes × multiplier (e.g. Blacksmith 4 vCPU = 4×, so 1 minute costs 4 × $0.002). The Price column already includes it.",
   flex: (
     <>
       Price factor for appending <code className="font-mono">;scheduling=flex</code> to the <code className="font-mono">runs-on</code> label (Blacksmith):
@@ -150,7 +150,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       meta: { title: 'Multiplier' },
       sortingFn: 'basic',
       sortUndefined: 'last',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Mult." help={HELP.multiplier} align="right" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Billing ×" help={HELP.multiplier} align="right" />,
       cell: ({ row }) => (
         <div className="text-right font-mono tabular-nums">{row.original.multiplier == null ? <Dash /> : `${row.original.multiplier}×`}</div>
       ),
