@@ -1,10 +1,11 @@
 import * as React from 'react'
-import { MonitorIcon, MoonIcon, PlusIcon, StarIcon, SunIcon } from 'lucide-react'
+import { MenuIcon, MonitorIcon, MoonIcon, PlusIcon, StarIcon, SunIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
@@ -36,33 +37,70 @@ function ThemeToggle() {
   )
 }
 
+type Page = 'main' | 'calc' | 'flat'
+
+// Header links. `page` marks the internal pages so the current one gets aria-current; `mono` is for the file links.
+function navLinks(root: string): { href: string; label: string; page?: Page; mono?: boolean }[] {
+  return [
+    { href: root, label: 'Per-minute', page: 'main' },
+    { href: `${root}calculator/`, label: 'Cost calculator', page: 'calc' },
+    { href: `${root}flat-fee/`, label: 'Flat-fee plans', page: 'flat' },
+    { href: `${root}api.json`, label: 'api.json', mono: true },
+    { href: `${root}schema.json`, label: 'schema.json', mono: true },
+    { href: `${REPO}#readme`, label: 'Docs' },
+  ]
+}
+
 // root: relative path from the current page to the site root ('./' on the main page, '../' on calculator/ and flat-fee/).
-export function SiteHeader({ root = './', current = 'main' }: { root?: string; current?: 'main' | 'calc' | 'flat' }) {
+// The inline nav needs about 1150 px next to the brand and the right-hand buttons, so below xl (1280 px) it collapses
+// into a menu button; labels never wrap.
+export function SiteHeader({ root = './', current = 'main' }: { root?: string; current?: Page }) {
+  const links = navLinks(root)
   return (
     <header className="sticky top-0 z-40 border-b bg-background/75 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-4 sm:px-6 lg:px-8">
-        <a href={root} className="flex items-center gap-2.5">
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-2 px-4 sm:gap-4 sm:px-6 lg:px-8 xl:gap-6">
+        <a href={root} className="flex shrink-0 items-center gap-2.5" aria-label="runnerdb home">
           <Logo className="size-7" />
-          <span className="font-mono text-[15px] font-semibold tracking-tight">runnerdb</span>
+          <span className="hidden font-mono text-[15px] font-semibold tracking-tight min-[384px]:inline">runnerdb</span>
         </a>
-        <nav className="hidden items-center gap-1 text-sm text-muted-foreground md:flex" aria-label="Main">
-          <a href={root} aria-current={current === 'main' ? 'page' : undefined} className={cn('rounded-md px-2.5 py-1.5 transition-colors hover:text-foreground', current === 'main' && 'text-foreground')}>Per-minute</a>
-          <a href={`${root}calculator/`} aria-current={current === 'calc' ? 'page' : undefined} className={cn('rounded-md px-2.5 py-1.5 transition-colors hover:text-foreground', current === 'calc' && 'text-foreground')}>Cost calculator</a>
-          <a href={`${root}flat-fee/`} aria-current={current === 'flat' ? 'page' : undefined} className={cn('rounded-md px-2.5 py-1.5 transition-colors hover:text-foreground', current === 'flat' && 'text-foreground')}>Flat-fee plans</a>
-          <a href={`${root}api.json`} className="rounded-md px-2.5 py-1.5 font-mono text-[13px] transition-colors hover:text-foreground">api.json</a>
-          <a href={`${root}schema.json`} className="rounded-md px-2.5 py-1.5 font-mono text-[13px] transition-colors hover:text-foreground">schema.json</a>
-          <a href={`${REPO}#readme`} className="rounded-md px-2.5 py-1.5 transition-colors hover:text-foreground">Docs</a>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm" className="h-8 shrink-0 px-2 text-muted-foreground xl:hidden" aria-label="Menu">
+              <MenuIcon />
+              <span className="hidden md:inline">Menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-48">
+            {links.map((l) => (
+              <DropdownMenuItem key={l.label} asChild className={cn(l.mono && 'font-mono text-[13px]', l.page && l.page === current && 'bg-accent/60 font-medium')}>
+                <a href={l.href} aria-current={l.page && l.page === current ? 'page' : undefined}>{l.label}</a>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <nav className="hidden items-center gap-1 text-sm whitespace-nowrap text-muted-foreground xl:flex" aria-label="Main">
+          {links.map((l) => (
+            <a
+              key={l.label}
+              href={l.href}
+              aria-current={l.page && l.page === current ? 'page' : undefined}
+              className={cn('rounded-md px-2.5 py-1.5 whitespace-nowrap transition-colors hover:text-foreground', l.mono && 'font-mono text-[13px]', l.page && l.page === current && 'text-foreground')}
+            >
+              {l.label}
+            </a>
+          ))}
         </nav>
-        <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+        <div className="ml-auto flex shrink-0 items-center gap-1.5 whitespace-nowrap sm:gap-2">
           <a
             href={REPO}
+            aria-label="GitHub repository (star it)"
             className="group inline-flex h-8 items-center overflow-hidden rounded-md border bg-background text-sm font-medium shadow-xs transition-colors hover:bg-accent dark:bg-input/30"
           >
             <span className="flex items-center gap-2 px-2.5">
               <GitHubIcon className="size-4" />
               <span className="hidden sm:inline">GitHub</span>
             </span>
-            <span className="flex h-full items-center gap-1 border-l px-2.5 text-muted-foreground group-hover:text-foreground">
+            <span className="hidden h-full items-center gap-1 border-l px-2.5 text-muted-foreground group-hover:text-foreground min-[440px]:flex">
               <StarIcon className="size-3.5" />
               <span className="hidden sm:inline">Star</span>
             </span>
