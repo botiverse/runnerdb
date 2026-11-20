@@ -15,7 +15,7 @@ export default function App() {
             <RunnersTable />
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            List prices in USD per runtime minute, before plan quotas, discounts and per-job rounding. Click a label to copy it; confirm prices at the source before relying on them.
+            Price is what one minute costs at list price, in USD, before free minutes, plan discounts and per-job rounding; every other column explains or adjusts it. Click a label to copy it; confirm prices at the source before relying on them.
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
             What would your month cost? The{' '}

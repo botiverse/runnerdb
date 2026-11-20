@@ -1,7 +1,7 @@
 import type { ColumnDef, FilterFn } from '@tanstack/react-table'
 import { ExternalLinkIcon } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { formatDate, formatPrice, type Runner, type Unit } from '@/lib/data'
+import { flexDiscount, formatDate, formatPrice, type Runner, type Unit } from '@/lib/data'
 import { DataTableColumnHeader } from './column-header'
 import { HeaderHelp } from '@/components/header-help'
 import { ArchBadge, LabelChip, OsBadge, Price, ProviderAvatar, PublicFree } from '@/components/runner-bits'
@@ -24,19 +24,22 @@ const HELP = {
   vcpu: 'Number of virtual CPUs. – means the provider has not published a verified count.',
   memory: 'Memory (RAM) in GB, as published by the provider. – means not published.',
   disk: 'Disk (storage) in GB, as published by the provider. – means not published.',
-  multiplier: "Billing multiplier: the provider charges one base rate per minute and bigger runners count as several minutes. Billed minutes = runtime minutes × multiplier (e.g. Blacksmith 4 vCPU = 4×, so 1 minute costs 4 × $0.002). The Price column already includes it.",
+  multiplier:
+    'Some providers (Blacksmith, Namespace) charge one base rate per minute and bill bigger runners as several minutes: a 4 vCPU Blacksmith runner counts each minute as 4 billed minutes, so 1 minute costs 4 × $0.002 = $0.008. Already included in Price.',
   flex: (
     <>
-      Price factor for appending <code className="font-mono">;scheduling=flex</code> to the <code className="font-mono">runs-on</code> label (Blacksmith):
-      0.6× bills 60% of the list price.
+      Blacksmith only: add <code className="font-mono">;scheduling=flex</code> to the end of the <code className="font-mono">runs-on</code> label to pay
+      less than Price. The job may take longer to start. −40% means you pay 60% of Price.
     </>
   ),
-  publicFree: 'Free for public repositories: jobs from public repos are not billed.',
-  asOf: "Date this price was last checked against the provider's source. Click it to open the source.",
+  publicFree: 'Jobs from public repositories are not billed on this runner.',
+  asOf: "The date we last checked this price on the provider's pricing page. Click it to open that page.",
 }
 
 const priceHelp = (unit: Unit) =>
-  `List price in USD per runtime ${unit === 'h' ? 'hour (per-minute price × 60)' : 'minute'}, before plan quotas, discounts and per-job rounding.`
+  unit === 'h'
+    ? "What one hour of this runner costs at the provider's list price, in USD (the per-minute price × 60). For providers that charge a base rate and count bigger runners as several minutes (Blacksmith, Namespace), this is already multiplied. Before free minutes, plan discounts and per-job rounding."
+    : "What one minute of this runner costs at the provider's list price, in USD. For providers that charge a base rate and count bigger runners as several minutes (Blacksmith, Namespace), this is already multiplied. Before free minutes, plan discounts and per-job rounding."
 
 export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
   return [
@@ -141,18 +144,18 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       accessorKey: 'price',
       meta: { title: 'Price' },
       sortingFn: 'basic',
-      header: ({ column }) => <DataTableColumnHeader column={column} title={`Price $/${unit}`} help={priceHelp(unit)} align="right" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title={unit === 'h' ? 'Price / hour' : 'Price / min'} help={priceHelp(unit)} align="right" />,
       cell: ({ row }) => <Price value={row.original.price} unit={unit} />,
     },
     {
       id: 'multiplier',
       accessorFn: (r) => r.multiplier ?? undefined,
-      meta: { title: 'Multiplier' },
+      meta: { title: 'Counts as' },
       sortingFn: 'basic',
       sortUndefined: 'last',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Billing ×" help={HELP.multiplier} align="right" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Counts as" help={HELP.multiplier} align="right" />,
       cell: ({ row }) => (
-        <div className="text-right font-mono tabular-nums">{row.original.multiplier == null ? <Dash /> : `${row.original.multiplier}×`}</div>
+        <div className="text-right font-mono tabular-nums">{row.original.multiplier == null ? <Dash /> : `${row.original.multiplier} min`}</div>
       ),
     },
     {
@@ -161,7 +164,7 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
       meta: { title: 'Flex discount' },
       sortingFn: 'basic',
       sortUndefined: 'last',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Flex" help={HELP.flex} align="right" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title={<>Flex<br />discount</>} help={HELP.flex} align="right" />,
       cell: ({ row: { original: r } }) =>
         r.flex == null ? (
           <div className="text-right"><Dash /></div>
@@ -169,10 +172,10 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
           <div className="text-right">
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="cursor-help font-mono tabular-nums underline decoration-muted-foreground/40 decoration-dotted underline-offset-4">{r.flex}×</span>
+                <span className="cursor-help font-mono tabular-nums underline decoration-muted-foreground/40 decoration-dotted underline-offset-4">{flexDiscount(r.flex)}</span>
               </TooltipTrigger>
               <TooltipContent>
-                Flex scheduling: {Math.round(r.flex * 100)}% of list price ({formatPrice(r.price * r.flex, unit)}/{unit})
+                With flex: {formatPrice(r.price * r.flex, unit)}/{unit} ({Math.round(r.flex * 100)}% of Price)
               </TooltipContent>
             </Tooltip>
           </div>
@@ -181,8 +184,8 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
     {
       id: 'publicFree',
       accessorFn: (r) => (r.publicFree ? 1 : 0),
-      meta: { title: 'Free on public repos' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Public" help={HELP.publicFree} align="center" />,
+      meta: { title: 'Free for public' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title={<>Free for<br />public</>} help={HELP.publicFree} align="center" />,
       cell: ({ row }) => (
         <div className="flex justify-center">
           <PublicFree free={row.original.publicFree} />
@@ -192,15 +195,15 @@ export function makeColumns(unit: Unit): ColumnDef<Runner>[] {
     {
       id: 'asOf',
       accessorKey: 'asOf',
-      meta: { title: 'Verified' },
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Verified" help={HELP.asOf} />,
+      meta: { title: 'Checked' },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Checked" help={HELP.asOf} />,
       cell: ({ row: { original: r } }) => (
         <a
           href={r.source}
           target="_blank"
           rel="noopener noreferrer"
           title={`Source: ${new URL(r.source).hostname}`}
-          aria-label={`Verified ${formatDate(r.asOf)}; pricing source for ${r.id}`}
+          aria-label={`Checked ${formatDate(r.asOf)}; pricing source for ${r.id}`}
           className="group/src inline-flex items-center gap-1.5 rounded-md text-xs text-muted-foreground tabular-nums transition-colors hover:text-foreground"
         >
           {formatDate(r.asOf)}

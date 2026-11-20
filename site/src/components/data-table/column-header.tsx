@@ -39,14 +39,15 @@ export function DataTableColumnHeader<TData, TValue>({
       type="button"
       onClick={column.getToggleSortingHandler()}
       className={cn(
-        '-mx-2 inline-flex h-8 cursor-pointer items-center gap-1 rounded-md px-2 text-xs font-medium tracking-wide text-muted-foreground uppercase transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
+        '-mx-2 inline-flex min-h-8 cursor-pointer items-center gap-1 rounded-md px-2 text-xs font-medium tracking-wide text-muted-foreground uppercase transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
         help && 'mr-0 pr-1',
         s && 'text-foreground',
         align === 'right' && 'flex-row-reverse',
         className,
       )}
     >
-      <span>{title}</span>
+      {/* Long titles pass a <br /> ("Free for<br />public") to take two lines instead of widening the table. */}
+      <span className={cn('py-1 leading-tight', align === 'right' && 'text-right', align === 'center' && 'text-center')}>{title}</span>
       {s === 'desc' ? (
         <ArrowDownIcon className="size-3.5 text-brand-fg" />
       ) : s === 'asc' ? (

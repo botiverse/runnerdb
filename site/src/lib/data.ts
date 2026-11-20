@@ -141,6 +141,10 @@ export const labelCount = runners.reduce((n, r) => n + r.labels.length, 0)
 export const maxPrice = Math.max(...runners.map((r) => r.price))
 
 export type Unit = 'min' | 'h'
+
+/** Flex price factor (0.6) as the discount readers care about ("−40%"). */
+export const flexDiscount = (f: number) => `−${Math.round((1 - f) * 100)}%`
+
 export function formatPrice(perMinute: number, unit: Unit): string {
   if (perMinute === 0) return '$0'
   if (unit === 'min') return '$' + +perMinute.toFixed(4)
