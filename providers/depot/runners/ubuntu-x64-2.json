@@ -14,6 +14,6 @@
   "price_usd_per_minute": 0.006,
   "public_repo_free": false,
   "source_url": "https://depot.dev/docs/github-actions/runner-types",
-  "verified_as_of": "2026-11-19",
+  "verified_as_of": "2026-11-28",
   "notes": "AMD EC2 instance. Depot lists a 1x minutes multiplier for this size. Part of the memory is reserved for an in-memory disk accelerator."
 }

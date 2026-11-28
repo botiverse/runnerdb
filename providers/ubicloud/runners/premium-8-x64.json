@@ -15,6 +15,6 @@
   "price_usd_per_minute": 0.008,
   "public_repo_free": false,
   "source_url": "https://www.ubicloud.com/docs/about/pricing",
-  "verified_as_of": "2026-11-19",
+  "verified_as_of": "2026-11-28",
   "notes": "Premium x64 runner (AMD Ryzen 9 7950X3D). The explicit ubicloud-premium-* labels are listed in Ubicloud's label config (https://github.com/ubicloud/ubicloud/blob/main/config/github_runner_labels.yml); whether they also fall back to standard machines when premium capacity is full is not documented."
 }

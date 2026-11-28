@@ -13,6 +13,6 @@
   "multiplier": 32,
   "public_repo_free": false,
   "source_url": "https://namespace.so/pricing",
-  "verified_as_of": "2026-11-19",
+  "verified_as_of": "2026-11-28",
   "notes": "Machine label nscloud-ubuntu-{20.04,22.04,24.04,26.04}-amd64-32x64; -with-* suffixes (cache, features, builders) do not change the shape or price. AMD EPYC hardware. Price is Namespace's pay-as-you-go (overage) rate; plan-included minutes cost $0.001/unit."
 }

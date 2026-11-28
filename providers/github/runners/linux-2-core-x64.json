@@ -14,6 +14,6 @@
   "public_repo_free": true,
   "source_url": "https://docs.github.com/en/billing/reference/actions-runner-pricing",
   "specs_url": "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
-  "verified_as_of": "2026-11-19",
+  "verified_as_of": "2026-11-28",
   "notes": "Standard runner. vCPU/RAM/disk are GitHub's published spec for private repositories (2 CPU, 8 GB RAM, 14 GB SSD); jobs in public repositories run on a larger machine (4 CPU, 16 GB RAM, 14 GB SSD) for free. Price: re-check against the GitHub pricing reference; GitHub has changed runner prices and specs before."
 }
